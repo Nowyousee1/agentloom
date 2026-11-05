@@ -1,0 +1,18 @@
+version: 2
+updates:
+  # The workspaces are dependency-free today; this keeps them that way by surfacing any
+  # devDependencies that creep in, plus the actions used by the workflows.
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 3
+    commit-message:
+      prefix: chore
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 3
+    commit-message:
+      prefix: chore

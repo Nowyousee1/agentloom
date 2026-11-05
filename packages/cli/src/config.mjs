@@ -61,7 +61,10 @@ export function defaultConfig() {
         limit: 200,
         note: 'Codex 自己抽取的 stage1 记忆（每条 rollout 一行）。默认纳入索引；嫌吵就 enabled=false。'
       },
-      maxSectionChars: 4000
+      maxSectionChars: 4000,
+      // "auto" follows the host's own agent-instructions cap instead of a number baked in here;
+      // loadConfig() already defaults a missing value to "auto", this keeps new files explicit.
+      dshBudgetBytes: 'auto'
     },
     mcp: {
       codexConfigPath: '~/.codex/config.toml'
@@ -74,19 +77,19 @@ export function defaultConfig() {
  * Copy-then-remove is used instead of rename so it also works when the two paths are on
  * different volumes (a symlinked home, a container mount, ...).
  */
-export function migrateLegacyHub() {
-  if (X.exists(CONFIG_PATH) || !X.exists(path.join(LEGACY_HUB_ROOT, 'hub.json'))) return null;
-  X.ensureDir(HUB_ROOT);
-  fs.cpSync(LEGACY_HUB_ROOT, HUB_ROOT, { recursive: true, force: false, errorOnExist: false });
-  const cfgPath = path.join(HUB_ROOT, 'hub.json');
-  const cfg = X.readJson(cfgPath, null);
+export function migrateLegacyHub(legacyRoot = LEGACY_HUB_ROOT, hubRoot = HUB_ROOT) {
+  const configPath = path.join(hubRoot, 'hub.json');
+  if (X.exists(configPath) || !X.exists(path.join(legacyRoot, 'hub.json'))) return null;
+  X.ensureDir(hubRoot);
+  fs.cpSync(legacyRoot, hubRoot, { recursive: true, force: false, errorOnExist: false });
+  const cfg = X.readJson(configPath, null);
   if (cfg?.hub) {
-    cfg.hub.root = HUB_ROOT;
+    cfg.hub.root = hubRoot;
     cfg.hub.name = 'agentloom';
-    X.writeJson(cfgPath, cfg);
+    X.writeJson(configPath, cfg);
   }
-  fs.rmSync(LEGACY_HUB_ROOT, { recursive: true, force: true });
-  return LEGACY_HUB_ROOT;
+  fs.rmSync(legacyRoot, { recursive: true, force: true });
+  return legacyRoot;
 }
 
 /**
@@ -94,8 +97,13 @@ export function migrateLegacyHub() {
  * exists on Windows; rewrite it to `~` (which `expand()` understands everywhere) so one hub.json
  * stays portable between machines.
  */
-function portablePaths(value) {
-  if (typeof value === 'string') return value.replace(/^\$\{USERPROFILE\}[\\/]/, '~/');
+export function portablePaths(value) {
+  if (typeof value === 'string') {
+    // Strip the profile prefix, then normalise the separators: a hub.json written on Windows has to
+    // stay readable on macOS/Linux, where `\` is an ordinary character rather than a separator.
+    const stripped = value.replace(/^\$\{USERPROFILE\}[\\/]/, '');
+    return stripped === value ? value : `~/${stripped.replace(/\\/g, '/')}`;
+  }
   if (Array.isArray(value)) return value.map(portablePaths);
   if (value && typeof value === 'object') {
     const out = {};

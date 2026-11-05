@@ -1,0 +1,68 @@
+name: Bug report
+description: Something broke — a sync that should have worked, a lost link, a crash.
+title: "bug: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this. A copy of `agentloom doctor` output solves
+        most triage questions, so please paste it below.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. run `agentloom init`
+        2. edit ~/.agentloom/skills/...
+        3. run `agentloom sync`
+        4. ...
+    validations:
+      required: true
+  - type: textarea
+    id: doctor
+    attributes:
+      label: "`agentloom doctor` output"
+      description: |
+        Paste the full output. It contains paths and versions, so skim it for anything private
+        before submitting.
+      render: text
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: "Node, OS, agentloom, and (if relevant) DSH / Codex versions."
+      placeholder: "Node 24.12.0, Windows 11, agentloom 0.3.0, DSH 0.2.1-rc.5, Codex 0.157.1"
+    validations:
+      required: true
+  - type: dropdown
+    id: side
+    attributes:
+      label: Which side is affected?
+      multiple: true
+      options:
+        - CLI (agentloom)
+        - DeepSeek Harness plugin (dsh-agentloom)
+        - Codex marketplace plugin
+        - MCP bridge
+        - Memory index / injection
+        - Documentation
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant output or logs
+      description: Anything else — stderr, stack traces, `link_check`, file listings.
+      render: text
+    validations:
+      required: false

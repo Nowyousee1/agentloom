@@ -4,6 +4,23 @@
   "private": true,
   "type": "module",
   "description": "Monorepo for agentloom: one source of truth for skills, MCP servers and memory across AI coding agents.",
+  "homepage": "https://github.com/agentloom/agentloom#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agentloom/agentloom.git"
+  },
+  "bugs": {
+    "url": "https://github.com/agentloom/agentloom/issues"
+  },
+  "author": "agentloom contributors",
+  "keywords": [
+    "agent-skills",
+    "shared-memory",
+    "mcp",
+    "codex",
+    "deepseek-harness",
+    "ai-agents"
+  ],
   "workspaces": [
     "packages/*"
   ],
@@ -12,7 +29,12 @@
   },
   "scripts": {
     "test": "node --test packages/cli/test/*.test.mjs",
-    "smoke": "node packages/cli/bin/agentloom.mjs --help"
+    "smoke": "node packages/cli/bin/agentloom.mjs --help",
+    "doctor": "node packages/cli/bin/agentloom.mjs doctor",
+    "verify": "node scripts/verify.mjs",
+    "version:check": "node scripts/version.mjs",
+    "version:set": "node scripts/version.mjs --set",
+    "version:sync": "node scripts/version.mjs --sync"
   },
   "license": "MIT"
 }

@@ -313,23 +313,22 @@ function readCodexStage1(dbPath, limit = 200) {
   }
 }
 
-export function buildIndex(cfg) {
-  const sources = [];
-  const entries = [];
-  const seen = new Set();
+/** Append unless an entry with the same title and leading body already exists. */
+function addUnique(entries, seen, e) {
+  const key = `${e.title}\u0000${e.body.slice(0, 160)}`;
+  if (seen.has(key)) return false;
+  seen.add(key);
+  entries.push(e);
+  return true;
+}
 
-  // Hub-authored shared memories come first: they are the only entries that both harnesses can
-  // *write*, so they are the ones that must never fall out of the index (or the digest).
+function collectShared(entries, seen, sources) {
   const shared = readShared();
-  for (const s of shared) {
-    const e = sharedEntry(s);
-    const key = `${e.title}\u0000${e.body.slice(0, 160)}`;
-    if (seen.has(key)) continue;
-    seen.add(key);
-    entries.push(e);
-  }
+  for (const s of shared) addUnique(entries, seen, sharedEntry(s));
   sources.push({ id: 'loom-shared', path: SHARED_PATH, exists: true, entries: shared.length, writable: true });
+}
 
+function collectConfiguredSources(cfg, entries, seen, sources) {
   for (const src of cfg.memory?.sources ?? []) {
     const p = expand(src.path);
     if (!X.isFile(p)) {
@@ -338,64 +337,74 @@ export function buildIndex(cfg) {
     }
     const list =
       src.kind === 'agents-md'
-        ? splitSections(stripGeneratedBlock(X.readText(p))).map((s) => makeEntry({ source: src.id, title: s.title, body: s.body }))
+        ? splitSections(stripGeneratedBlock(X.readText(p))).map((s) =>
+            makeEntry({ source: src.id, title: s.title, body: s.body })
+          )
         : entryFromMarkdownFile(src.id, p);
-    for (const e of list) {
-      const key = `${e.title}\u0000${e.body.slice(0, 160)}`;
-      if (seen.has(key)) continue;
-      seen.add(key);
-      entries.push(e);
-    }
+    for (const e of list) addUnique(entries, seen, e);
     sources.push({ id: src.id, path: p, exists: true, entries: list.length });
   }
+}
 
+function collectRollouts(cfg, entries, seen, sources) {
   const rolloutDir = expand(cfg.memory?.rolloutDir ?? '');
-  if (rolloutDir && X.exists(rolloutDir)) {
-    let n = 0;
-    for (const f of X.listFiles(rolloutDir, (name) => name.endsWith('.md'))) {
-      const p = path.join(rolloutDir, f);
-      const parsed = entryFromMarkdownFile('codex-rollout', p, { fallbackTitle: `Rollout ${f}` });
-      for (const e of parsed) {
-        const key = `${e.title}\u0000${e.body.slice(0, 160)}`;
-        if (seen.has(key)) continue;
-        seen.add(key);
-        entries.push(e);
-        n += 1;
-      }
-    }
-    sources.push({ id: 'codex-rollout', path: rolloutDir, exists: true, entries: n });
+  if (!rolloutDir || !X.exists(rolloutDir)) return;
+  let n = 0;
+  for (const f of X.listFiles(rolloutDir, (name) => name.endsWith('.md'))) {
+    const parsed = entryFromMarkdownFile('codex-rollout', path.join(rolloutDir, f), {
+      fallbackTitle: `Rollout ${f}`
+    });
+    for (const e of parsed) if (addUnique(entries, seen, e)) n += 1;
   }
+  sources.push({ id: 'codex-rollout', path: rolloutDir, exists: true, entries: n });
+}
 
-  // Codex's own memory pipeline output. Enabled unless explicitly turned off; the switch
-  // exists because these are per-rollout raw notes and can be noisy.
+// Codex's own memory pipeline output. Enabled unless explicitly turned off; the switch exists
+// because these are per-rollout raw notes and can be noisy.
+function collectCodexStage1(cfg, entries, seen, sources) {
   const sq = cfg.memory?.sqlite ?? {};
-  if (sq.enabled !== false) {
-    const dbPath = expand(sq.path ?? '${USERPROFILE}/.codex/memories_1.sqlite');
-    const list = readCodexStage1(dbPath, sq.limit ?? 200);
-    let n = 0;
-    for (const e of list) {
-      const key = `${e.title}\u0000${e.body.slice(0, 160)}`;
-      if (seen.has(key)) continue;
-      seen.add(key);
-      entries.push(e);
-      n += 1;
-    }
-    sources.push({ id: 'codex-stage1', path: dbPath, exists: X.isFile(dbPath), entries: n });
-  }
+  if (sq.enabled === false) return;
+  const dbPath = expand(sq.path ?? '${USERPROFILE}/.codex/memories_1.sqlite');
+  let n = 0;
+  for (const e of readCodexStage1(dbPath, sq.limit ?? 200)) if (addUnique(entries, seen, e)) n += 1;
+  sources.push({ id: 'codex-stage1', path: dbPath, exists: X.isFile(dbPath), entries: n });
+}
 
+function markDshVisibility(cfg, entries) {
   const dsh = dshVisibleTitles(cfg);
   for (const e of entries) {
     e.visibleInDsh = dsh.titles.has(e.title);
     e.anchors = e.tags;
   }
+  return dsh;
+}
 
+function orderEntries(entries) {
   entries.sort((a, b) => {
-    if (Boolean(a.origin === 'hub') !== Boolean(b.origin === 'hub')) return a.origin === 'hub' ? -1 : 1;
+    const aHub = a.origin === 'hub';
+    const bHub = b.origin === 'hub';
+    if (aHub !== bHub) return aHub ? -1 : 1;
     const da = a.date ?? '';
     const db = b.date ?? '';
     if (da !== db) return db.localeCompare(da);
     return b.importance - a.importance;
   });
+}
+
+export function buildIndex(cfg) {
+  const sources = [];
+  const entries = [];
+  const seen = new Set();
+
+  // Hub-authored shared memories come first: they are the only entries that both harnesses can
+  // *write*, so they are the ones that must never fall out of the index (or the digest).
+  collectShared(entries, seen, sources);
+  collectConfiguredSources(cfg, entries, seen, sources);
+  collectRollouts(cfg, entries, seen, sources);
+  collectCodexStage1(cfg, entries, seen, sources);
+
+  const dsh = markDshVisibility(cfg, entries);
+  orderEntries(entries);
 
   const index = {
     version: 1,

@@ -1,5 +1,8 @@
 # dsh-agentloom
 
+[![npm](https://img.shields.io/npm/v/dsh-agentloom)](https://www.npmjs.com/package/dsh-agentloom)
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 DeepSeek Harness plugin that connects the harness to the shared `~/.agentloom` layer.
 
 ## What it does
@@ -30,6 +33,9 @@ not invisible according to a hard-coded constant.
 ```bash
 # from the monorepo checkout
 plugin_manager install_bundle target="link:<abs path to packages/dsh-plugin>"
+
+# or from the registry, once published
+pnpm add dsh-agentloom
 ```
 
 Installing under a new package name (`dsh-agentloom`, formerly `@local/dsh-agent-hub`) requires a
@@ -37,6 +43,8 @@ harness restart; `plugin_manager` reports `restart-required` / `package-moved` a
 
 ## Notes
 
+- Six tools here versus seven in the MCP bridge: `loom_skill_show` only exists over MCP, because the
+  harness can already read the skill files directly.
 - Reads the index at `~/.agentloom/memory/index.json`; when a source file is newer than the index the
   injected block adds a staleness warning instead of silently serving old data.
 - Links under `~/.dsh/skills` are created by the CLI, not by this plugin.

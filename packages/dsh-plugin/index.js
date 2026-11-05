@@ -201,7 +201,7 @@ function buildDigest(index, settings, stale) {
   return [
     `[agentloom 共享记忆] 真源 ${path.join(HUB_ROOT, 'memory', 'shared.md')}（DSH 与 Codex 共用，共 ${shared} 条）` +
       `，其余来自 Codex 侧 AGENTS.md 中「当前 DSH 上下文看不到」的条目。`,
-    `它是背景信息；与本次会话可见内容或用户当前指令冲突时，以更近、更具体的一方为准。共 ${index.stats?.entries ?? 0} 条索引，其中 ${hidden} 条不在本会话可见范围内。`,
+    `它是背景信息；与当前上下文可见内容或最新指令冲突时，以更近、更具体的一方为准。共 ${index.stats?.entries ?? 0} 条索引，其中 ${hidden} 条不在当前上下文可见范围内。`,
     stale && settings.staleWarning ? '⚠ 源文件比索引新（索引可能过期），需要最新结论时先调用 loom_sync。' : '',
     '',
     ...lines
@@ -218,7 +218,7 @@ function searchIndex(index, query, limit, includeVisible) {
   if (!tokens.length || !index) return [];
   const hits = [];
   for (const e of index.entries) {
-    // hub 真源永远参与检索：它是两端共用、用户明确要求长期成立的那部分。
+    // hub 真源永远参与检索：它是两端共用、长期成立的那部分。
     if (!includeVisible && e.visibleInDsh && e.origin !== 'hub') continue;
     const title = String(e.title).toLowerCase();
     const body = String(e.body).toLowerCase();
@@ -350,7 +350,7 @@ export function apply(ctx, config) {
       for (const l of v.links?.broken ?? []) lines.push(`    ! ${l.name}：${l.reason}`);
       if (v.memory) {
         lines.push(
-          `  共享记忆 ${v.memory.entries} 条（其中两端真源 ${v.memory.shared ?? 0} 条）；本会话可见 ${v.memory.visible}，**不可见 ${v.memory.hidden}**（索引 ${v.memory.builtAt}）`
+          `  共享记忆 ${v.memory.entries} 条（其中两端真源 ${v.memory.shared ?? 0} 条）；当前上下文可见 ${v.memory.visible}，**不可见 ${v.memory.hidden}**（索引 ${v.memory.builtAt}）`
         );
         lines.push(`    来源：${(v.memory.sources ?? []).map((s) => `${s.id}(${s.exists ? s.entries : '缺失'})`).join(' / ')}`);
       } else {
@@ -426,7 +426,7 @@ export function apply(ctx, config) {
   register({
     name: 'loom_memory_search',
     description:
-      '在共享记忆索引里检索（来源是 Codex 侧 AGENTS.md 等）。默认只返回「DSH 当前上下文看不到」的条目——这正是本工具的价值所在；需要连可见条目一起搜时传 include_visible=true。用户提到以前的里程碑、踩过的坑、某个项目的结论时用它。',
+      '在共享记忆索引里检索（来源是 Codex 侧 AGENTS.md 等）。默认只返回「DSH 当前上下文看不到」的条目——这正是本工具的价值所在；需要连可见条目一起搜时传 include_visible=true。需要回忆既往里程碑、踩过的坑或某个项目的结论时用它。',
     parameters: {
       type: 'object',
       properties: {
@@ -443,7 +443,7 @@ export function apply(ctx, config) {
       const lines = [`共享记忆命中 ${v.hits.length} 条（检索：${v.query}，索引 ${v.builtAt}）：`];
       for (const h of v.hits) {
         lines.push('');
-        lines.push(`● ${h.date || '—'} · ${h.title}${h.visibleInDsh ? '（本会话已可见）' : '（本会话原本不可见）'}`);
+        lines.push(`● ${h.date || '—'} · ${h.title}${h.visibleInDsh ? '（当前上下文可见）' : '（当前上下文原本不可见）'}`);
         lines.push(`  ${flat(h.body, 420)}`);
       }
       return lines.join('\n');
@@ -462,7 +462,7 @@ export function apply(ctx, config) {
   register({
     name: 'loom_memory_add',
     description:
-      '往共享记忆真源（~/.agentloom/memory/shared.md）写入一条记忆。写进去的条目 DSH 与 Codex 都能读到，是两端共享的结论；同标题再写一次是更新而不是新增。用它记住用户明确要求长期成立的偏好、决定或踩坑结论——不要用它记任务进度、临时状态或能从代码里读出的东西。',
+      '往共享记忆真源（~/.agentloom/memory/shared.md）写入一条记忆。写进去的条目 DSH 与 Codex 都能读到，是两端共享的结论；同标题再写一次是更新而不是新增。用它记住需要长期成立的偏好、决定或踩坑结论——不要用它记任务进度、临时状态或能从代码里读出的东西。',
     parameters: {
       type: 'object',
       properties: {

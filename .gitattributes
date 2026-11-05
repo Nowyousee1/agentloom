@@ -1,0 +1,13 @@
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.svg text
+*.zip binary
+
+package-lock.json -diff linguist-generated
+pnpm-lock.yaml -diff linguist-generated
+*.snap linguist-generated

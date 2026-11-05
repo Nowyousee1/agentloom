@@ -1,5 +1,11 @@
 # agentloom
 
+[![CI](https://github.com/agentloom/agentloom/actions/workflows/ci.yml/badge.svg)](https://github.com/agentloom/agentloom/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/agentloom?label=agentloom)](https://www.npmjs.com/package/agentloom)
+[![npm plugin](https://img.shields.io/npm/v/dsh-agentloom?label=dsh-agentloom)](https://www.npmjs.com/package/dsh-agentloom)
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![node](https://img.shields.io/badge/node-%3E%3D22.5-339933.svg)](https://nodejs.org)
+
 **One source of truth for skills, MCP servers and memory across AI coding agents.**
 
 agentloom keeps the state you would otherwise duplicate per harness — reusable skills, MCP server
@@ -17,6 +23,18 @@ per-harness differences kept in explicit overlay files rather than in divergent 
                                ⇄  ~/.codex/AGENTS.md (marked block)
                                ⇄  MCP tools `loom_memory_*`
 ```
+
+## Where to find it
+
+| What you are looking for | Where it is |
+| --- | --- |
+| This repository | `github.com/agentloom/agentloom` — search GitHub for **`agentloom`** or the topics `agent-skills`, `shared-memory`, `mcp`, `codex`, `deepseek-harness` |
+| CLI on npm | [`agentloom`](https://www.npmjs.com/package/agentloom) → `npm i -g agentloom` (or `npx agentloom`) |
+| DSH plugin on npm | [`dsh-agentloom`](https://www.npmjs.com/package/dsh-agentloom) |
+| Inside DeepSeek Harness | plugin manager → `dsh-agentloom`; plugin entry `include:dsh-agentloom`; MCP tools are the 7 `loom_*` tools |
+| Inside Codex | `codex plugin list` → `agentloom@agentloom`; MCP server name `agentloom` |
+| On this machine | source of truth `~/.agentloom`, config `~/.agentloom/hub.json`, generated Codex plugin `~/.agentloom/build/codex-marketplace` |
+| Health check | `agentloom doctor` — one row per wire, `✖` exits non-zero |
 
 ## Why
 
@@ -165,6 +183,18 @@ rm -rf ~/.agentloom
 
 The marked block in `~/.codex/AGENTS.md` can be deleted by hand; the backup from the first write is
 `AGENTS.md.bak-agenthub`.
+
+## Documentation
+
+| Document | Answers |
+| --- | --- |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | how the pieces fit, the sync order, failure modes, extension points |
+| [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md) | exact harness versions, the two patched plugins, migration from 0.2.x |
+| [docs/FAQ.md](docs/FAQ.md) | one harness only, data location, junctions, stale links, uninstall |
+| [docs/PUBLISHING.md](docs/PUBLISHING.md) | maintainer release checklist and the secrets it needs |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | the five invariants, dev setup, test matrix |
+| [SECURITY.md](SECURITY.md) | threat model, what is guaranteed and what is not |
+| [CHANGELOG.md](CHANGELOG.md) | what changed in each version |
 
 ## Status
 

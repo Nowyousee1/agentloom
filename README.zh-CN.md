@@ -1,5 +1,10 @@
 # agentloom（中文说明）
 
+[![CI](https://github.com/agentloom/agentloom/actions/workflows/ci.yml/badge.svg)](https://github.com/agentloom/agentloom/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/agentloom?label=agentloom)](https://www.npmjs.com/package/agentloom)
+[![npm plugin](https://img.shields.io/npm/v/dsh-agentloom?label=dsh-agentloom)](https://www.npmjs.com/package/dsh-agentloom)
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 **为多个 AI 编码代理维护同一份技能、MCP 服务器与记忆。**
 
 DeepSeek Harness 与 Codex 各自有自己的技能目录、指令文件与 MCP 配置。同一个流程被复制两遍之后，
@@ -16,6 +21,18 @@ DeepSeek Harness 与 Codex 各自有自己的技能目录、指令文件与 MCP 
                                ⇄  ~/.codex/AGENTS.md（标记块）
                                ⇄  MCP 工具 loom_memory_*
 ```
+
+## 怎么找到它
+
+| 你要找的东西 | 在哪里 |
+| --- | --- |
+| 仓库本身 | `github.com/agentloom/agentloom`；GitHub 搜 **`agentloom`**，或 topics：`agent-skills`、`shared-memory`、`mcp`、`codex`、`deepseek-harness` |
+| npm 上的 CLI | [`agentloom`](https://www.npmjs.com/package/agentloom) → `npm i -g agentloom`（或 `npx agentloom`） |
+| npm 上的 DSH 插件 | [`dsh-agentloom`](https://www.npmjs.com/package/dsh-agentloom) |
+| DeepSeek Harness 内 | 插件管理器里找 `dsh-agentloom`；entry 为 `include:dsh-agentloom`；MCP 工具是 7 个 `loom_*` |
+| Codex 内 | `codex plugin list` 显示 `agentloom@agentloom`；MCP 服务器名 `agentloom` |
+| 本机 | 真源 `~/.agentloom`，配置 `~/.agentloom/hub.json`，生成的 Codex 插件 `~/.agentloom/build/codex-marketplace` |
+| 自检 | `agentloom doctor`：每条接线一行，有 `✖` 时退出码非 0 |
 
 ## 快速开始
 
@@ -79,6 +96,8 @@ packages/cli            CLI + MCP server + DSH 兼容补丁
 packages/dsh-plugin     DeepSeek Harness 插件：注入 + loom_* 工具 + Config schema
 docs/ARCHITECTURE.md    组件、执行顺序与失败模式
 docs/COMPATIBILITY.md   已验证版本、宿主 shim 细节、迁移步骤
+docs/FAQ.md             只有一端、数据在哪、链接失效、卸载等常见问题
+docs/PUBLISHING.md      维护者发版清单（占位 URL、NPM_TOKEN、发版命令、禁止提交项）
 ```
 
 ## 已知边界
@@ -101,4 +120,5 @@ rm -rf ~/.agentloom
 
 ## 许可
 
-MIT，见 [LICENSE](LICENSE)。英文说明见 [README.md](README.md)。
+MIT，见 [LICENSE](LICENSE)。英文说明见 [README.md](README.md)；行为约定见 [CONTRIBUTING.md](CONTRIBUTING.md)，
+安全模型见 [SECURITY.md](SECURITY.md)，变更见 [CHANGELOG.md](CHANGELOG.md)。

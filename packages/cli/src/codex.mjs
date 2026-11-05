@@ -46,7 +46,7 @@ export function buildCodexMarketplace(cfg) {
     keywords: ['shared', 'skills', 'memory', 'deepseek-harness', 'agentloom'],
     skills: './skills/',
     interface: {
-      displayName: 'Agent Hub',
+      displayName: 'Agentloom',
       shortDescription: 'Shared skills from ~/.agentloom',
       longDescription: ['Skills authored in ~/.agentloom (single source of truth) and rendered for Codex.']
         .concat(descriptions)
@@ -74,7 +74,7 @@ export function buildCodexMarketplace(cfg) {
 
   const marketplace = {
     name: 'agentloom',
-    interface: { displayName: 'Agent Hub (local)' },
+    interface: { displayName: 'Agentloom (local)' },
     plugins: [
       {
         name: CODEX_PLUGIN_NAME,

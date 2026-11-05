@@ -350,103 +350,115 @@ function cmdSkill() {
  * `agentloom doctor` — answer "is this installation actually wired up?" without guessing.
  * Every check prints ✓ (ok), ! (degraded, still works) or ✖ (broken); exit code is 1 on ✖.
  */
-function cmdDoctor() {
-  const rows = [];
-  const add = (level, area, msg, hint) => rows.push({ level, area, msg, hint });
-
+function checkNodeVersion(add) {
   const [major, minor] = process.versions.node.split('.').map(Number);
   if (major > 22 || (major === 22 && minor >= 5)) add('ok', 'node', `v${process.versions.node}`);
   else add('bad', 'node', `v${process.versions.node} 太旧`, '需要 >=22.5.0（用到 node:sqlite 做只读镜像）');
+}
 
-  let cfg = null;
+function checkHub(add) {
   try {
-    cfg = requireHub();
+    const cfg = requireHub();
     add('ok', 'hub', `${HUB_ROOT}`);
+    return cfg;
   } catch (err) {
     add('bad', 'hub', '未初始化', `${err.message}；先跑 agentloom init`);
+    return null;
   }
+}
 
-  if (cfg) {
-    const dshDir = dshSkillsDir(cfg);
-    try {
-      X.ensureDir(dshDir);
-      add('ok', 'dsh-skills', `${dshDir}`);
-    } catch (err) {
-      add('bad', 'dsh-skills', `不可写: ${dshDir}`, err.message);
-    }
-    const links = linkStatus(cfg);
-    const okLinks = links.filter((l) => l.correct).length;
-    if (!links.length) add('warn', 'links', '没有渲染产物', '跑 agentloom sync');
-    else if (okLinks === links.length) add('ok', 'links', `${okLinks}/${links.length} 正确`);
-    else add('bad', 'links', `${links.length - okLinks} 个链接不对`, '跑 agentloom sync（会自动修失效链接）');
-
-    const codexDir = codexSkillsDir(cfg);
-    if (X.exists(codexDir)) {
-      const n = X.listDirs(codexDir).filter((d) => X.isFile(path.join(codexDir, d, 'SKILL.md'))).length;
-      add('ok', 'codex-skills', `${n} 个（只读）`);
-      const hubNames = new Set(listSkills().map((s) => s.name));
-      const notShared = X.listDirs(codexDir).filter(
-        (d) => X.isFile(path.join(codexDir, d, 'SKILL.md')) && !hubNames.has(d)
-      );
-      if (notShared.length) {
-        add('warn', 'codex-skills', `${notShared.length} 个还没进真源`, 'agentloom skill import --from=codex --dry-run 看清单');
-      }
-    } else {
-      add('warn', 'codex-skills', `不存在: ${codexDir}`, '没装 Codex CLI 可忽略');
-    }
-
-    const doc = loadServers();
-    const bridge = doc.servers?.agentloom;
-    if (!bridge) add('bad', 'mcp-bridge', 'servers.json 里没有 agentloom 桥接', '跑 agentloom sync');
-    else if (bridge.codex?.include === false) add('warn', 'mcp-bridge', '桥接被标为仅 DSH', 'mcp/servers.json 里把 codex.include 设为 true');
-    else add('ok', 'mcp-bridge', `${(bridge.args ?? []).join(' ') || bridge.command}`);
-    const runtimeEntry = path.join(HUB_ROOT, 'runtime', 'mcp', 'server.mjs');
-    if (X.exists(runtimeEntry)) add('ok', 'mcp-runtime', runtimeEntry);
-    else add('warn', 'mcp-runtime', '桥接运行时副本缺失', '跑 agentloom sync（会复制到 ~/.agentloom/runtime）');
-
-    const market = path.join(CODEX_MARKET_DIR, 'plugins', 'agentloom');
-    if (X.exists(path.join(market, '.codex-plugin', 'plugin.json'))) {
-      const version = X.readJson(path.join(market, '.codex-plugin', 'plugin.json'), {}).version;
-      add('ok', 'codex-plugin', `marketplace 产物 v${version}`);
-      const cacheRoot = path.join(os.homedir(), '.codex', 'plugins', 'cache', 'agentloom', 'agentloom');
-      const installed = X.exists(cacheRoot) ? fs.readdirSync(cacheRoot) : [];
-      if (installed.includes(version)) add('ok', 'codex-plugin', `已安装 v${version}`);
-      else if (installed.length)
-        add('warn', 'codex-plugin', `已安装 ${installed.join(', ')}，产物是 v${version}`, 'codex plugin add agentloom@agentloom');
-      else add('warn', 'codex-plugin', '尚未安装到 Codex', 'codex plugin add agentloom@agentloom');
-    } else {
-      add('bad', 'codex-plugin', 'Codex marketplace 产物缺失', '跑 agentloom sync');
-    }
-
-    const agentsPath = expand(cfg.memory?.codexAgentsPath ?? '~/.codex/AGENTS.md');
-    if (!X.isFile(agentsPath)) add('warn', 'agents-md', `不存在: ${agentsPath}`, '没装 Codex 可忽略');
-    else {
-      const text = X.readText(agentsPath);
-      if (text.includes('<!-- agentloom:shared:start -->')) add('ok', 'agents-md', '共享记忆块在位');
-      else add('warn', 'agents-md', '没有共享记忆块', '跑 agentloom sync（或关掉 injectIntoCodexAgents）');
-    }
-
-    try {
-      const index = loadIndex();
-      const sources = (index.sources ?? []).filter((s) => s.exists && s.mtime);
-      const newest = sources.reduce((m, s) => Math.max(m, Date.parse(s.mtime) || 0), 0);
-      const builtAt = Date.parse(index.builtAt ?? '') || 0;
-      if (newest > builtAt + 1000) add('warn', 'index', '源文件比索引新', '跑 agentloom memory index');
-      else add('ok', 'index', `${index.stats.entries} 条（DSH 不可见 ${index.stats.invisibleInDsh}）`);
-    } catch {
-      add('bad', 'index', '记忆索引缺失', '跑 agentloom memory index');
-    }
-
-    const legacy = expand('~/.agent-hub');
-    if (X.exists(legacy)) add('warn', 'legacy', `旧目录仍在: ${legacy}`, '重命名为 ~/.agentloom 后删掉，避免两个真源');
+function checkDshSide(add, cfg) {
+  const dshDir = dshSkillsDir(cfg);
+  try {
+    X.ensureDir(dshDir);
+    add('ok', 'dsh-skills', `${dshDir}`);
+  } catch (err) {
+    add('bad', 'dsh-skills', `不可写: ${dshDir}`, err.message);
   }
+  const links = linkStatus(cfg);
+  const okLinks = links.filter((l) => l.correct).length;
+  if (!links.length) add('warn', 'links', '没有渲染产物', '跑 agentloom sync');
+  else if (okLinks === links.length) add('ok', 'links', `${okLinks}/${links.length} 正确`);
+  else add('bad', 'links', `${links.length - okLinks} 个链接不对`, '跑 agentloom sync（会自动修失效链接）');
+}
 
+function checkCodexSide(add, cfg) {
+  const codexDir = codexSkillsDir(cfg);
+  if (!X.exists(codexDir)) {
+    add('warn', 'codex-skills', `不存在: ${codexDir}`, '没装 Codex CLI 可忽略');
+    return;
+  }
+  const skills = X.listDirs(codexDir).filter((d) => X.isFile(path.join(codexDir, d, 'SKILL.md')));
+  add('ok', 'codex-skills', `${skills.length} 个（只读）`);
+  const hubNames = new Set(listSkills().map((s) => s.name));
+  const notShared = skills.filter((d) => !hubNames.has(d));
+  if (notShared.length) {
+    add('warn', 'codex-skills', `${notShared.length} 个还没进真源`, 'agentloom skill import --from=codex --dry-run 看清单');
+  }
+}
+
+function checkMcpBridge(add) {
+  const bridge = loadServers().servers?.agentloom;
+  if (!bridge) add('bad', 'mcp-bridge', 'servers.json 里没有 agentloom 桥接', '跑 agentloom sync');
+  else if (bridge.codex?.include === false) add('warn', 'mcp-bridge', '桥接被标为仅 DSH', 'mcp/servers.json 里把 codex.include 设为 true');
+  else add('ok', 'mcp-bridge', `${(bridge.args ?? []).join(' ') || bridge.command}`);
+  const runtimeEntry = path.join(HUB_ROOT, 'runtime', 'mcp', 'server.mjs');
+  if (X.exists(runtimeEntry)) add('ok', 'mcp-runtime', runtimeEntry);
+  else add('warn', 'mcp-runtime', '桥接运行时副本缺失', '跑 agentloom sync（会复制到 ~/.agentloom/runtime）');
+}
+
+function checkCodexPlugin(add) {
+  const market = path.join(CODEX_MARKET_DIR, 'plugins', 'agentloom');
+  const manifest = path.join(market, '.codex-plugin', 'plugin.json');
+  if (!X.exists(manifest)) {
+    add('bad', 'codex-plugin', 'Codex marketplace 产物缺失', '跑 agentloom sync');
+    return;
+  }
+  const version = X.readJson(manifest, {}).version;
+  add('ok', 'codex-plugin', `marketplace 产物 v${version}`);
+  const cacheRoot = path.join(os.homedir(), '.codex', 'plugins', 'cache', 'agentloom', 'agentloom');
+  const installed = X.exists(cacheRoot) ? fs.readdirSync(cacheRoot) : [];
+  if (installed.includes(version)) add('ok', 'codex-plugin', `已安装 v${version}`);
+  else if (installed.length)
+    add('warn', 'codex-plugin', `已安装 ${installed.join(', ')}，产物是 v${version}`, 'codex plugin add agentloom@agentloom');
+  else add('warn', 'codex-plugin', '尚未安装到 Codex', 'codex plugin add agentloom@agentloom');
+}
+
+function checkAgentsMirror(add, cfg) {
+  const agentsPath = expand(cfg.memory?.codexAgentsPath ?? '~/.codex/AGENTS.md');
+  if (!X.isFile(agentsPath)) {
+    add('warn', 'agents-md', `不存在: ${agentsPath}`, '没装 Codex 可忽略');
+    return;
+  }
+  const text = X.readText(agentsPath);
+  if (text.includes('<!-- agentloom:shared:start -->')) add('ok', 'agents-md', '共享记忆块在位');
+  else add('warn', 'agents-md', '没有共享记忆块', '跑 agentloom sync（或关掉 injectIntoCodexAgents）');
+}
+
+function checkMemoryIndex(add) {
+  try {
+    const index = loadIndex();
+    const sources = (index.sources ?? []).filter((s) => s.exists && s.mtime);
+    const newest = sources.reduce((m, s) => Math.max(m, Date.parse(s.mtime) || 0), 0);
+    const builtAt = Date.parse(index.builtAt ?? '') || 0;
+    if (newest > builtAt + 1000) add('warn', 'index', '源文件比索引新', '跑 agentloom memory index');
+    else add('ok', 'index', `${index.stats.entries} 条（DSH 不可见 ${index.stats.invisibleInDsh}）`);
+  } catch {
+    add('bad', 'index', '记忆索引缺失', '跑 agentloom memory index');
+  }
+}
+
+function checkLegacyAndPatches(add) {
+  const legacy = expand('~/.agent-hub');
+  if (X.exists(legacy)) add('warn', 'legacy', `旧目录仍在: ${legacy}`, '重命名为 ~/.agentloom 后删掉，避免两个真源');
   const patched = ['dsh-at-file', '@harleendance/dsh-skill-evolution'].filter((pkg) => {
     const dir = path.join(HUB_ROOT, '..', '.dsh', 'profiles', 'desktop', 'node_modules', pkg);
     return X.exists(path.join(dir, 'lib', 'settings-compat.mjs'));
   });
   if (patched.length) add('warn', 'dsh-patches', `${patched.length} 个插件被打过 settings 兼容补丁`, '宿主升级后重跑 packages/cli/patches/settings-compat/apply.mjs --check');
+}
 
+function printDoctorReport(rows) {
   const mark = { ok: '✓', warn: '!', bad: '✖' };
   log('agentloom doctor');
   for (const r of rows) {
@@ -457,6 +469,25 @@ function cmdDoctor() {
   log('');
   log(bad ? `✖ ${bad} 项必须修，${warn} 项提醒` : warn ? `✓ 可用（${warn} 项提醒）` : '✓ 全部检查通过');
   if (bad) process.exitCode = 1;
+}
+
+function cmdDoctor() {
+  const rows = [];
+  const add = (level, area, msg, hint) => rows.push({ level, area, msg, hint });
+
+  checkNodeVersion(add);
+  const cfg = checkHub(add);
+  if (cfg) {
+    checkDshSide(add, cfg);
+    checkCodexSide(add, cfg);
+    checkMcpBridge(add);
+    checkCodexPlugin(add);
+    checkAgentsMirror(add, cfg);
+    checkMemoryIndex(add);
+  }
+  checkLegacyAndPatches(add);
+
+  printDoctorReport(rows);
 }
 
 function cmdLink() {

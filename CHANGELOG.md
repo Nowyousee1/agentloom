@@ -4,6 +4,34 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- Release engineering: `scripts/verify.mjs` (versions, syntax, packed contents, required files,
+  documentation links) and `scripts/version.mjs` (bump every `package.json` plus
+  `CODEX_PLUGIN_VERSION` in one step).
+- `.github/workflows/release.yml`: tag `v*` → verify → test → `npm publish --provenance` for both
+  packages → GitHub release notes taken from this file.
+- Community files: `CODE_OF_CONDUCT.md`, issue forms, PR template, Dependabot, `.editorconfig`,
+  `.gitattributes`, `.nvmrc`.
+- Docs: `docs/FAQ.md` and `docs/PUBLISHING.md`; "Where to find it" tables in both READMEs.
+- Tests for the Codex marketplace output and for config portability/migration (34 tests total).
+
+### Changed
+
+- `defaultConfig()` now writes `memory.dshBudgetBytes: "auto"` and `portablePaths()` normalises path
+  separators, so one `hub.json` round-trips unchanged on every platform.
+- `migrateLegacyHub(legacyRoot, hubRoot)` takes explicit roots, which is what makes the migration
+  path testable; the CLI call site is unchanged.
+- Marketplace and plugin display names are `Agentloom` (they still said `Agent Hub`).
+
+### Fixed
+
+- `scripts/verify.mjs` no longer triggers Node's `DEP0190` deprecation warning when invoking
+  `npm pack` on Windows.
+- `LICENSE` is shipped inside both published packages instead of only at the repository root.
+
 ## [0.3.0] — 2026-11-05
 
 First public release under the name **agentloom** (formerly `agent-hub`).

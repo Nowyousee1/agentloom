@@ -1,5 +1,8 @@
 # agentloom (CLI)
 
+[![npm](https://img.shields.io/npm/v/agentloom)](https://www.npmjs.com/package/agentloom)
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 Dependency-free Node.js (>= 22.5) command line tool that owns the `~/.agentloom` source of truth and
 renders skills, MCP definitions and memory into DeepSeek Harness and Codex.
 
