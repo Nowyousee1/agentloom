@@ -11,6 +11,8 @@ permissions:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    env:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -34,16 +36,22 @@ jobs:
         run: node --test packages/cli/test/*.test.mjs
 
       - name: Publish CLI
+        if: env.NPM_TOKEN != ''
         working-directory: packages/cli
         run: npm publish --access public --provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Publish DSH plugin
+        if: env.NPM_TOKEN != ''
         working-directory: packages/dsh-plugin
         run: npm publish --access public --provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Note skipped npm publish
+        if: env.NPM_TOKEN == ''
+        run: echo "NPM_TOKEN is not configured; skipping npm publish. Add the secret and re-run this workflow to publish." >> "$GITHUB_STEP_SUMMARY"
 
       - name: GitHub release
         env:
