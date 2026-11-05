@@ -86,16 +86,44 @@ export function sha1(text) {
   return createHash('sha1').update(text).digest('hex');
 }
 
-/** True when p is a symlink / Windows junction / any reparse point pointing elsewhere. */
+/** True when p is a symlink / Windows junction / any reparse point. */
 export function isLink(p) {
   try {
-    const st = fs.lstatSync(p);
-    if (st.isSymbolicLink()) return true;
+    if (fs.lstatSync(p).isSymbolicLink()) return true;
+    // Junction detection on Windows: lstat reports those as symlinks too, so this is only a
+    // fallback for exotic reparse points. Never apply the realpath comparison on POSIX:
+    // macOS resolves /var/... to /private/var/..., which would flag real directories as links.
+    if (process.platform !== 'win32') return false;
     const real = fs.realpathSync(p);
     return path.resolve(real).toLowerCase() !== path.resolve(p).toLowerCase();
   } catch {
     return false;
   }
+}
+
+/** Real path when it exists, otherwise the lexically resolved path. */
+export function realOrResolved(p) {
+  try {
+    return fs.realpathSync(p);
+  } catch {
+    return path.resolve(p);
+  }
+}
+
+/** Compare two paths the way the filesystem does (case-insensitive on Windows, symlink-aware). */
+export function samePath(a, b) {
+  if (!a || !b) return false;
+  const norm = (p) => (process.platform === 'win32' ? p.toLowerCase() : p);
+  return norm(realOrResolved(a)) === norm(realOrResolved(b));
+}
+
+/** True when child is inside parent (or equal to it), following symlinks when they resolve. */
+export function isUnder(child, parent) {
+  if (!child || !parent) return false;
+  const norm = (p) => (process.platform === 'win32' ? p.toLowerCase() : p);
+  const c = norm(realOrResolved(child));
+  const p = norm(realOrResolved(parent));
+  return c === p || c.startsWith(p + path.sep);
 }
 
 export function linkTarget(p) {

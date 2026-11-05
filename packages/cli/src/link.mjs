@@ -74,7 +74,7 @@ export function linkDshSkills(cfg, names, opts = {}) {
       const isLink = X.isLink(linkPath);
       if (isLink) {
         const current = X.linkTarget(linkPath);
-        if (current && path.resolve(current).toLowerCase() === path.resolve(target).toLowerCase()) {
+        if (current && X.samePath(current, target)) {
           results.push({ name, action: 'unchanged' });
           managed[name] = { ...(managed[name] || {}), target };
           continue;
@@ -123,8 +123,8 @@ export function linkDshSkills(cfg, names, opts = {}) {
       }
       if (!X.isLink(linkPath)) continue;
       if (X.exists(linkPath)) {
-        const target = (X.linkTarget(linkPath) || '').toLowerCase();
-        if (!target.startsWith(path.resolve(skillsRoot).toLowerCase())) continue;
+        const target = X.linkTarget(linkPath);
+        if (!X.isUnder(target, skillsRoot)) continue;
       }
       removeJunction(linkPath);
       delete managed[name];
@@ -140,8 +140,8 @@ export function linkDshSkills(cfg, names, opts = {}) {
       if (wanted.includes(name)) continue;
       const linkPath = path.join(root, name);
       if (!X.isLink(linkPath)) continue;
-      const target = (X.linkTarget(linkPath) || '').toLowerCase();
-      if (!target.startsWith(path.resolve(skillsRoot).toLowerCase())) continue;
+      const target = X.linkTarget(linkPath);
+      if (!X.isUnder(target, skillsRoot)) continue;
       if (X.exists(linkPath) && X.exists(target)) continue; // still a live render, not ours to drop
       removeJunction(linkPath);
       delete managed[name];
@@ -203,7 +203,7 @@ export function linkStatus(cfg) {
       correct:
         X.exists(linkPath) &&
         X.isLink(linkPath) &&
-        (X.linkTarget(linkPath) || '').toLowerCase() === path.resolve(target).toLowerCase(),
+        X.samePath(X.linkTarget(linkPath), target),
       managed: Boolean(managed[name])
     };
   });
