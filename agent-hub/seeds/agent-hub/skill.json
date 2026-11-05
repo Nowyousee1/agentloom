@@ -1,7 +1,0 @@
-{
-  "name": "agent-hub",
-  "description": "跨 harness 共享层：用单一真源维护技能（core + 各端 variants）、MCP 服务器定义与共享记忆索引，供 DeepSeek Harness 与 Codex 同时使用。当用户提到 agent-hub、共享技能、同步技能到另一端的 agent、或要把同一条记忆给两个 harness 用时使用。",
-  "version": "0.1.0",
-  "targets": ["dsh", "codex"],
-  "tags": ["hub", "skills", "memory", "mcp", "sync"]
-}

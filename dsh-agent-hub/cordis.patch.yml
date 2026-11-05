@@ -1,4 +1,0 @@
-- insert:
-    - id: dsh-agent-hub
-      name: '@local/dsh-agent-hub'
-      config: {}

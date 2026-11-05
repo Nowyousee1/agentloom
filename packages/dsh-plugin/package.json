@@ -1,0 +1,54 @@
+{
+  "name": "dsh-agentloom",
+  "version": "0.3.0",
+  "type": "module",
+  "description": "Bridge the shared ~/.agentloom layer into DeepSeek Harness: hub status, one-shot sync, shared memory search, and injection of the memory entries the host's AGENTS.md budget currently truncates away.",
+  "keywords": [
+    "dsh-plugin",
+    "cordis",
+    "deepseek-harness",
+    "agentloom",
+    "memory",
+    "skills"
+  ],
+  "homepage": "https://github.com/agentloom/agentloom",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agentloom/agentloom.git",
+    "directory": "packages/dsh-plugin"
+  },
+  "bugs": {
+    "url": "https://github.com/agentloom/agentloom/issues"
+  },
+  "author": "agentloom contributors",
+  "exports": {
+    ".": "./index.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "README.md"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "peerDependencies": {
+    "agentloom": ">=0.3.0"
+  },
+  "peerDependenciesMeta": {
+    "agentloom": {
+      "optional": true
+    }
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,30 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node: [22, 24]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Unit tests
+        run: node --test packages/cli/test/*.test.mjs
+      - name: CLI help smoke test
+        run: node packages/cli/bin/agentloom.mjs --help
+      - name: Syntax check every module
+        shell: bash
+        run: |
+          for f in $(find packages -name '*.mjs' -o -name 'index.js' | grep -v node_modules); do
+            node --check "$f"
+          done

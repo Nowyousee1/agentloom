@@ -1,0 +1,47 @@
+{
+  "name": "agentloom",
+  "version": "0.3.0",
+  "type": "module",
+  "description": "Single source of truth for skills, MCP servers and memory shared between DeepSeek Harness and Codex CLI.",
+  "keywords": [
+    "agent",
+    "skills",
+    "memory",
+    "mcp",
+    "codex",
+    "deepseek-harness",
+    "cross-agent",
+    "single-source-of-truth"
+  ],
+  "homepage": "https://github.com/agentloom/agentloom",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agentloom/agentloom.git",
+    "directory": "packages/cli"
+  },
+  "bugs": {
+    "url": "https://github.com/agentloom/agentloom/issues"
+  },
+  "author": "agentloom contributors",
+  "bin": {
+    "agentloom": "./bin/agentloom.mjs"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "files": [
+    "bin/",
+    "src/",
+    "mcp/",
+    "patches/",
+    "seeds/",
+    "README.md"
+  ],
+  "scripts": {
+    "init": "node bin/agentloom.mjs init",
+    "sync": "node bin/agentloom.mjs sync",
+    "status": "node bin/agentloom.mjs status",
+    "doctor": "node bin/agentloom.mjs doctor"
+  },
+  "license": "MIT"
+}

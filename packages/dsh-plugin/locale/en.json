@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Agent Hub",
+    "description": "Bridges ~/.agentloom: status, one-shot sync, shared-memory search, and injection of memory entries truncated by the AGENTS.md budget."
+  }
+}
