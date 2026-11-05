@@ -6,6 +6,10 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+Nothing yet.
+
+## [0.3.1] — 2026-11-05
+
 ### Added
 
 - Release engineering: `scripts/verify.mjs` (versions, syntax, packed contents, required files,
@@ -31,6 +35,10 @@ All notable changes to this project are documented here. The format follows
 - `scripts/verify.mjs` no longer triggers Node's `DEP0190` deprecation warning when invoking
   `npm pack` on Windows.
 - `LICENSE` is shipped inside both published packages instead of only at the repository root.
+- Link handling on macOS: `isLink()` compared `realpath()` with the lexical path, so every real
+  directory under `/var/...` (which resolves to `/private/var/...`) looked like a link. The probe is
+  now `lstat()`-first everywhere and the realpath fallback is Windows-only; ownership, pruning and
+  `linkStatus()` compare paths through new `samePath()` / `isUnder()` helpers.
 
 ## [0.3.0] — 2026-11-05
 
