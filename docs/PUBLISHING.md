@@ -5,9 +5,9 @@ this file alone.
 
 ## Before the first public push
 
-1. Replace the placeholder repository URLs (`agentloom/agentloom`) in `package.json`,
-   `packages/*/package.json`, and the badges in `README.md` / `README.zh-CN.md` with the real
-   `owner/repo`.
+1. Repository URLs are already real (`Nowyousee1/agentloom`). If the project moves to another
+   owner or org, run a global replace of `Nowyousee1/agentloom` in `package.json`,
+   `packages/*/package.json`, `CONTRIBUTING.md`, and the badges in `README.md` / `README.zh-CN.md`.
 2. Turn on GitHub: Issues, Discussions (optional), branch protection on `main` requiring the `test`
    status check, and "Require a pull request before merging".
 3. Add the `NPM_TOKEN` repository secret (an npm automation token with publish rights on `agentloom`

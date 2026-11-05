@@ -4,13 +4,13 @@
   "private": true,
   "type": "module",
   "description": "Monorepo for agentloom: one source of truth for skills, MCP servers and memory across AI coding agents.",
-  "homepage": "https://github.com/agentloom/agentloom#readme",
+  "homepage": "https://github.com/Nowyousee1/agentloom#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/agentloom/agentloom.git"
+    "url": "git+https://github.com/Nowyousee1/agentloom.git"
   },
   "bugs": {
-    "url": "https://github.com/agentloom/agentloom/issues"
+    "url": "https://github.com/Nowyousee1/agentloom/issues"
   },
   "author": "agentloom contributors",
   "keywords": [

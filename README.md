@@ -1,6 +1,6 @@
 # agentloom
 
-[![CI](https://github.com/agentloom/agentloom/actions/workflows/ci.yml/badge.svg)](https://github.com/agentloom/agentloom/actions/workflows/ci.yml)
+[![CI](https://github.com/Nowyousee1/agentloom/actions/workflows/ci.yml/badge.svg)](https://github.com/Nowyousee1/agentloom/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/agentloom?label=agentloom)](https://www.npmjs.com/package/agentloom)
 [![npm plugin](https://img.shields.io/npm/v/dsh-agentloom?label=dsh-agentloom)](https://www.npmjs.com/package/dsh-agentloom)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
@@ -28,7 +28,7 @@ per-harness differences kept in explicit overlay files rather than in divergent 
 
 | What you are looking for | Where it is |
 | --- | --- |
-| This repository | `github.com/agentloom/agentloom` — search GitHub for **`agentloom`** or the topics `agent-skills`, `shared-memory`, `mcp`, `codex`, `deepseek-harness` |
+| This repository | `github.com/Nowyousee1/agentloom` — search GitHub for **`agentloom`** or the topics `agent-skills`, `shared-memory`, `mcp`, `codex`, `deepseek-harness` |
 | CLI on npm | [`agentloom`](https://www.npmjs.com/package/agentloom) → `npm i -g agentloom` (or `npx agentloom`) |
 | DSH plugin on npm | [`dsh-agentloom`](https://www.npmjs.com/package/dsh-agentloom) |
 | Inside DeepSeek Harness | plugin manager → `dsh-agentloom`; plugin entry `include:dsh-agentloom`; MCP tools are the 7 `loom_*` tools |

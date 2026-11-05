@@ -1,6 +1,6 @@
 # agentloom（中文说明）
 
-[![CI](https://github.com/agentloom/agentloom/actions/workflows/ci.yml/badge.svg)](https://github.com/agentloom/agentloom/actions/workflows/ci.yml)
+[![CI](https://github.com/Nowyousee1/agentloom/actions/workflows/ci.yml/badge.svg)](https://github.com/Nowyousee1/agentloom/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/agentloom?label=agentloom)](https://www.npmjs.com/package/agentloom)
 [![npm plugin](https://img.shields.io/npm/v/dsh-agentloom?label=dsh-agentloom)](https://www.npmjs.com/package/dsh-agentloom)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
@@ -26,7 +26,7 @@ DeepSeek Harness 与 Codex 各自有自己的技能目录、指令文件与 MCP 
 
 | 你要找的东西 | 在哪里 |
 | --- | --- |
-| 仓库本身 | `github.com/agentloom/agentloom`；GitHub 搜 **`agentloom`**，或 topics：`agent-skills`、`shared-memory`、`mcp`、`codex`、`deepseek-harness` |
+| 仓库本身 | `github.com/Nowyousee1/agentloom`；GitHub 搜 **`agentloom`**，或 topics：`agent-skills`、`shared-memory`、`mcp`、`codex`、`deepseek-harness` |
 | npm 上的 CLI | [`agentloom`](https://www.npmjs.com/package/agentloom) → `npm i -g agentloom`（或 `npx agentloom`） |
 | npm 上的 DSH 插件 | [`dsh-agentloom`](https://www.npmjs.com/package/dsh-agentloom) |
 | DeepSeek Harness 内 | 插件管理器里找 `dsh-agentloom`；entry 为 `include:dsh-agentloom`；MCP 工具是 7 个 `loom_*` |

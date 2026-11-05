@@ -11,14 +11,14 @@
     "memory",
     "skills"
   ],
-  "homepage": "https://github.com/agentloom/agentloom",
+  "homepage": "https://github.com/Nowyousee1/agentloom",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/agentloom/agentloom.git",
+    "url": "git+https://github.com/Nowyousee1/agentloom.git",
     "directory": "packages/dsh-plugin"
   },
   "bugs": {
-    "url": "https://github.com/agentloom/agentloom/issues"
+    "url": "https://github.com/Nowyousee1/agentloom/issues"
   },
   "author": "agentloom contributors",
   "exports": {

@@ -23,7 +23,7 @@ mechanics of changing the code; the design rationale lives in
 ## Development setup
 
 ```bash
-git clone https://github.com/agentloom/agentloom.git
+git clone https://github.com/Nowyousee1/agentloom.git
 cd agentloom
 node --version        # >= 22.5.0
 node --test packages/cli/test/*.test.mjs

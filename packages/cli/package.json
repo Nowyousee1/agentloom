@@ -13,14 +13,14 @@
     "cross-agent",
     "single-source-of-truth"
   ],
-  "homepage": "https://github.com/agentloom/agentloom",
+  "homepage": "https://github.com/Nowyousee1/agentloom",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/agentloom/agentloom.git",
+    "url": "git+https://github.com/Nowyousee1/agentloom.git",
     "directory": "packages/cli"
   },
   "bugs": {
-    "url": "https://github.com/agentloom/agentloom/issues"
+    "url": "https://github.com/Nowyousee1/agentloom/issues"
   },
   "author": "agentloom contributors",
   "bin": {
