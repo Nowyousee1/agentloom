@@ -1,0 +1,7 @@
+{
+  "name": "stm32-keil-flash",
+  "description": "STM32 Keil MDK5（ARMCC V5.06）工程的编译、SWD 烧录与中断验收流程，含 --cpp11 导致中断向量不生效的已知坑和文档同步要求。编译/烧录/排查 STM32 裸机或 FreeRTOS 工程时使用。",
+  "version": "0.1.0",
+  "targets": ["dsh", "codex"],
+  "tags": ["stm32", "keil", "flash", "embedded"]
+}

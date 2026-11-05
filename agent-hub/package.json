@@ -1,0 +1,19 @@
+{
+  "name": "agent-hub",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Single source of truth for skills / MCP servers / memory shared between DeepSeek Harness and Codex CLI.",
+  "bin": {
+    "agent-hub": "./bin/agent-hub.mjs"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "scripts": {
+    "init": "node bin/agent-hub.mjs init",
+    "sync": "node bin/agent-hub.mjs sync",
+    "status": "node bin/agent-hub.mjs status"
+  },
+  "license": "MIT"
+}

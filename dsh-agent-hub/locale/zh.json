@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Agent Hub",
+    "description": "共享层桥接：查 hub 状态、一键 sync、检索共享记忆，并把 AGENTS.md 预算截断掉的记忆条目注入上下文。"
+  }
+}

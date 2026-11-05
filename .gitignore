@@ -1,0 +1,23 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# build / runtime artifacts
+dist/
+coverage/
+*.tsbuildinfo
+
+# local hub data (never part of the repo)
+.hub/
+*.local.json
+
+# editor / OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# logs
+*.log
+npm-debug.log*
+node_modules.orig/
