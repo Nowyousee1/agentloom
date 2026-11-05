@@ -16,3 +16,11 @@ updates:
     open-pull-requests-limit: 3
     commit-message:
       prefix: chore
+    groups:
+      actions:
+        patterns: ["*"]
+    ignore:
+      # Major action bumps change the Node runtime the action ships with; keep them
+      # out of the weekly noise and raise them deliberately instead.
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
