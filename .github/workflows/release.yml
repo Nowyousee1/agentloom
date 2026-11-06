@@ -42,7 +42,7 @@ jobs:
           npm pack ./packages/dsh-plugin --pack-destination release-assets
           mv release-assets/nowyousee1-agentloom-*.tgz release-assets/agentloom-cli.tgz
           mv release-assets/dsh-agentloom-*.tgz release-assets/dsh-agentloom.tgz
-          sha256sum release-assets/*.tgz > release-assets/SHA256SUMS
+          (cd release-assets && sha256sum *.tgz > SHA256SUMS)
           ls -lh release-assets
 
       - name: Publish CLI

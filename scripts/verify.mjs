@@ -149,7 +149,7 @@ const releaseWorkflow = fs.readFileSync(path.join(root, '.github', 'workflows', 
 const releaseArtifactMarkers = [
   'agentloom-cli.tgz',
   'dsh-agentloom.tgz',
-  'SHA256SUMS',
+  '(cd release-assets && sha256sum *.tgz > SHA256SUMS)',
   'gh release upload'
 ];
 const missingReleaseMarkers = releaseArtifactMarkers.filter((marker) => !releaseWorkflow.includes(marker));
