@@ -48,14 +48,26 @@ jobs:
       - name: Publish CLI
         if: env.NPM_TOKEN != ''
         working-directory: packages/cli
-        run: npm publish --access public --provenance
+        run: |
+          version="$(node -p "require('./package.json').version")"
+          if npm view "@nowyousee1/agentloom@$version" version >/dev/null 2>&1; then
+            echo "@nowyousee1/agentloom@$version is already published"
+          else
+            npm publish --access public --provenance
+          fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Publish DSH plugin
         if: env.NPM_TOKEN != ''
         working-directory: packages/dsh-plugin
-        run: npm publish --access public --provenance
+        run: |
+          version="$(node -p "require('./package.json').version")"
+          if npm view "dsh-agentloom@$version" version >/dev/null 2>&1; then
+            echo "dsh-agentloom@$version is already published"
+          else
+            npm publish --access public --provenance
+          fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
@@ -72,7 +84,11 @@ jobs:
             found { print }
           ' CHANGELOG.md > notes.md
           [ -s notes.md ] || echo "See CHANGELOG.md" > notes.md
-          gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --notes-file notes.md
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            gh release edit "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --notes-file notes.md
+          else
+            gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --notes-file notes.md
+          fi
 
       - name: Attach installable release artifacts
         env:

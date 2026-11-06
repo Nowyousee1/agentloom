@@ -8,6 +8,14 @@ All notable changes to this project are documented here. The format follows
 
 Nothing yet.
 
+## [0.3.4] — 2026-11-06
+
+### Fixed
+
+- The release workflow is rerunnable. An existing GitHub release is edited instead of recreated, and
+  an npm package version that is already present is skipped. This lets maintainers add `NPM_TOKEN`
+  and rerun the release after GitHub artifacts have already been published.
+
 ## [0.3.3] — 2026-11-06
 
 ### Fixed
@@ -109,7 +117,8 @@ First public release under the name **agentloom** (formerly `agent-hub`).
   host (`settingsNamespace`, `installSettingsSection`, typert `create()` codecs).
 - Invalid skill names and empty shared-memory titles are rejected instead of written.
 
-[Unreleased]: https://github.com/Nowyousee1/agentloom/compare/v0.3.3...HEAD
+[Unreleased]: https://github.com/Nowyousee1/agentloom/compare/v0.3.4...HEAD
+[0.3.4]: https://github.com/Nowyousee1/agentloom/compare/v0.3.3...v0.3.4
 [0.3.3]: https://github.com/Nowyousee1/agentloom/compare/v0.3.2...v0.3.3
 [0.3.2]: https://github.com/Nowyousee1/agentloom/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/Nowyousee1/agentloom/compare/v0.3.0...v0.3.1

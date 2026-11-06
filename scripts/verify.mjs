@@ -150,6 +150,9 @@ const releaseArtifactMarkers = [
   'agentloom-cli.tgz',
   'dsh-agentloom.tgz',
   '(cd release-assets && sha256sum *.tgz > SHA256SUMS)',
+  'npm view "@nowyousee1/agentloom@$version" version',
+  'npm view "dsh-agentloom@$version" version',
+  'gh release view "$GITHUB_REF_NAME"',
   'gh release upload'
 ];
 const missingReleaseMarkers = releaseArtifactMarkers.filter((marker) => !releaseWorkflow.includes(marker));
