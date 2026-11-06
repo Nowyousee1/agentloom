@@ -55,6 +55,17 @@ Conventional-commit style prefixes (`feat:`, `fix:`, `docs:`, `test:`, `chore:`)
 imperative subject. Explain *why* in the body when the change is not obvious; a future reader
 should be able to tell what breaks if your change is reverted.
 
+## Pushing (network-restricted environments)
+
+If `git push` over port 22 stalls (`Connection reset` / `Connection timed out during banner
+exchange`), use GitHub's SSH endpoint on 443 — note the host is `ssh.github.com`, not
+`github.com`:
+
+```bash
+git remote set-url origin ssh://git@ssh.github.com:443/<owner>/<repo>.git
+ssh -p 443 -T git@ssh.github.com      # expect: Hi <user>! You've successfully authenticated
+```
+
 ## Reporting bugs
 
 Open an issue with:
