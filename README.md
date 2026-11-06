@@ -1,6 +1,7 @@
 # agentloom
 
 [![CI](https://github.com/Nowyousee1/agentloom/actions/workflows/ci.yml/badge.svg)](https://github.com/Nowyousee1/agentloom/actions/workflows/ci.yml)
+[![release](https://img.shields.io/github/v/release/Nowyousee1/agentloom?label=release)](https://github.com/Nowyousee1/agentloom/releases)
 [![npm](https://img.shields.io/npm/v/agentloom?label=agentloom)](https://www.npmjs.com/package/agentloom)
 [![npm plugin](https://img.shields.io/npm/v/dsh-agentloom?label=dsh-agentloom)](https://www.npmjs.com/package/dsh-agentloom)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)

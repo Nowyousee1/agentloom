@@ -88,3 +88,7 @@ First public release under the name **agentloom** (formerly `agent-hub`).
 - `@deepseek-ai/dsh-settings` compatibility shims for plugins built against a newer
   host (`settingsNamespace`, `installSettingsSection`, typert `create()` codecs).
 - Invalid skill names and empty shared-memory titles are rejected instead of written.
+
+[Unreleased]: https://github.com/Nowyousee1/agentloom/compare/v0.3.1...HEAD
+[0.3.1]: https://github.com/Nowyousee1/agentloom/compare/v0.3.0...v0.3.1
+[0.3.0]: https://github.com/Nowyousee1/agentloom/releases/tag/v0.3.0
