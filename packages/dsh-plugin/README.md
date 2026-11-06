@@ -1,7 +1,10 @@
 # dsh-agentloom
 
 [![release](https://img.shields.io/github/v/release/Nowyousee1/agentloom?label=release)](https://github.com/Nowyousee1/agentloom/releases)
+[![npm](https://img.shields.io/npm/v/dsh-agentloom?label=npm)](https://www.npmjs.com/package/dsh-agentloom)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+**English** | [简体中文](#简体中文)
 
 DeepSeek Harness plugin that connects the harness to the shared `~/.agentloom` layer.
 
@@ -34,6 +37,9 @@ not invisible according to a hard-coded constant.
 # from the monorepo checkout
 plugin_manager install_bundle target="link:<abs path to packages/dsh-plugin>"
 
+# from npm
+dsh plugin --profile desktop add dsh-agentloom
+
 # or install the tarball attached to the latest GitHub release
 dsh plugin --profile desktop add https://github.com/Nowyousee1/agentloom/releases/latest/download/dsh-agentloom.tgz
 ```
@@ -48,3 +54,24 @@ harness restart; `plugin_manager` reports `restart-required` / `package-moved` a
 - Reads the index at `~/.agentloom/memory/index.json`; when a source file is newer than the index the
   injected block adds a staleness warning instead of silently serving old data.
 - Links under `~/.dsh/skills` are created by the CLI, not by this plugin.
+
+---
+
+## 简体中文
+
+`dsh-agentloom` 把 DeepSeek Harness 接到共享层 `~/.agentloom`。它会：
+
+1. 把两端都可写的共享记忆注入系统提示；
+2. 补上 Codex 侧 `AGENTS.md` 因上下文预算被截断、但 DSH 原本看不到的记忆；
+3. 提供 `loom_status`、`loom_sync`、`loom_memory_search`、`loom_memory_list`、
+   `loom_memory_add` 和 `loom_skill_list` 工具；
+4. 在设置页暴露 `enabled`、`limit`、`chars`、`staleWarning` 四个选项。
+
+从 npm 安装：
+
+```bash
+dsh plugin --profile desktop add dsh-agentloom
+```
+
+从源码或 GitHub Release tarball 安装、迁移说明和完整文档见
+[主仓库 README](https://github.com/Nowyousee1/agentloom#dsh-agentloom)。

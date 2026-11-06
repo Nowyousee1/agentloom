@@ -7,7 +7,7 @@ this file alone.
 
 1. Repository URLs are already real (`Nowyousee1/agentloom`). If the project moves to another
    owner or org, run a global replace of `Nowyousee1/agentloom` in `package.json`,
-   `packages/*/package.json`, `CONTRIBUTING.md`, and the badges in `README.md` / `README.zh-CN.md`.
+   `packages/*/package.json`, `CONTRIBUTING.md`, and the badges in `README.md`.
 2. Turn on GitHub: Issues, Discussions (optional), branch protection on `main` requiring the `test`
    status check, and "Require a pull request before merging".
 3. Add the `NPM_TOKEN` repository secret when registry publishing is enabled (an npm automation token
@@ -16,7 +16,8 @@ this file alone.
 4. Add repository topics so people can find it:
    `agent-skills`, `shared-memory`, `mcp`, `codex`, `deepseek-harness`, `developer-tools`,
    `claude-code`, `ai-agents`.
-5. Reserve both npm names (`npm view agentloom`, `npm view dsh-agentloom`); a stub publish is fine.
+5. Confirm both published npm names still resolve to this project:
+   `npm view @nowyousee1/agentloom` and `npm view dsh-agentloom`.
 6. Run the full gate once on a clean clone:
 
    ```bash

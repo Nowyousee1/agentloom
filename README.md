@@ -2,10 +2,14 @@
 
 [![CI](https://github.com/Nowyousee1/agentloom/actions/workflows/ci.yml/badge.svg)](https://github.com/Nowyousee1/agentloom/actions/workflows/ci.yml)
 [![release](https://img.shields.io/github/v/release/Nowyousee1/agentloom?label=release)](https://github.com/Nowyousee1/agentloom/releases)
+[![npm CLI](https://img.shields.io/npm/v/@nowyousee1/agentloom?label=npm%20CLI)](https://www.npmjs.com/package/@nowyousee1/agentloom)
+[![npm DSH plugin](https://img.shields.io/npm/v/dsh-agentloom?label=npm%20DSH)](https://www.npmjs.com/package/dsh-agentloom)
 [![CLI package](https://img.shields.io/badge/CLI-release%20tarball-2ea44f)](https://github.com/Nowyousee1/agentloom/releases/latest/download/agentloom-cli.tgz)
 [![DSH plugin](https://img.shields.io/badge/DSH-plugin%20tarball-2ea44f)](https://github.com/Nowyousee1/agentloom/releases/latest/download/dsh-agentloom.tgz)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![node](https://img.shields.io/badge/node-%3E%3D22.5-339933.svg)](https://nodejs.org)
+
+**English** | [简体中文](#简体中文)
 
 **One source of truth for skills, MCP servers and memory across AI coding agents.**
 
@@ -30,9 +34,9 @@ per-harness differences kept in explicit overlay files rather than in divergent 
 | What you are looking for | Where it is |
 | --- | --- |
 | This repository | `github.com/Nowyousee1/agentloom` — search GitHub for **`agentloom`** or the topics `agent-skills`, `shared-memory`, `mcp`, `codex`, `deepseek-harness` |
-| CLI package | [GitHub release tarball](https://github.com/Nowyousee1/agentloom/releases/latest/download/agentloom-cli.tgz) → `npm i -g <url>`; the installed command is `agentloom` |
-| DSH plugin | [GitHub release tarball](https://github.com/Nowyousee1/agentloom/releases/latest/download/dsh-agentloom.tgz) |
-| npm registry names | `@nowyousee1/agentloom` and `dsh-agentloom` are prepared, but their initial registry publication is pending account verification |
+| CLI package | `npm i -g @nowyousee1/agentloom`; the installed command is `agentloom`. The [GitHub release tarball](https://github.com/Nowyousee1/agentloom/releases/latest/download/agentloom-cli.tgz) remains available as an offline fallback |
+| DSH plugin | `npm i -g dsh-agentloom`, or install the [GitHub release tarball](https://github.com/Nowyousee1/agentloom/releases/latest/download/dsh-agentloom.tgz) |
+| npm registry names | [`@nowyousee1/agentloom`](https://www.npmjs.com/package/@nowyousee1/agentloom) and [`dsh-agentloom`](https://www.npmjs.com/package/dsh-agentloom) |
 | Inside DeepSeek Harness | plugin manager → `dsh-agentloom`; plugin entry `include:dsh-agentloom`; MCP tools are the 7 `loom_*` tools |
 | Inside Codex | `codex plugin list` → `agentloom@agentloom`; MCP server name `agentloom` |
 | On this machine | source of truth `~/.agentloom`, config `~/.agentloom/hub.json`, generated Codex plugin `~/.agentloom/build/codex-marketplace` |
@@ -53,7 +57,7 @@ per-harness differences kept in explicit overlay files rather than in divergent 
 
 ```bash
 # requires Node.js >= 22.5.0
-npm i -g https://github.com/Nowyousee1/agentloom/releases/latest/download/agentloom-cli.tgz
+npm i -g @nowyousee1/agentloom
 agentloom init
 agentloom doctor                              # is everything actually wired up?
 agentloom sync                                # idempotent: re-render, re-link, rebuild, re-index
@@ -201,12 +205,173 @@ The marked block in `~/.codex/AGENTS.md` can be deleted by hand; the backup from
 
 ## Status
 
-0.3.2 — source, tests and installable GitHub release artifacts are public. Verified end-to-end on
-Windows 11 with DeepSeek Harness (desktop) and Codex CLI 0.157.1. The design is intentionally
-conservative: no background daemon, no network listener, no runtime dependencies. Initial npm
-registry publication is still pending npm account verification; the release tarballs do not depend
-on that step.
+The current release is published to both npm and GitHub Releases. Verified end-to-end on Windows 11
+with DeepSeek Harness (desktop) and Codex CLI 0.157.1. The design is intentionally conservative: no
+background daemon, no network listener, no runtime dependencies.
 
 ## License
 
-MIT. See [LICENSE](LICENSE). 中文说明见 [README.zh-CN.md](README.zh-CN.md).
+MIT. See [LICENSE](LICENSE).
+
+---
+
+## 简体中文
+
+[English](#agentloom) | **简体中文**
+
+**为多个 AI 编码代理维护同一份技能、MCP 服务器定义与共享记忆。**
+
+不同的 AI 编码代理通常各自维护技能目录、指令文件和 MCP 配置。同一个工作流被复制两遍后，往往
+只有一端会持续更新；一条结论写在一个代理里，另一个代理也看不到。agentloom 把技能、MCP 定义和
+记忆收敛到本地唯一的真源 `~/.agentloom`，再按各端需要的格式渲染。端之间的真实差异放在显式的
+variant 文件里，而不是靠两份副本长期手工同步。
+
+目前支持 **DeepSeek Harness ⇄ Codex**，但目录和渲染模型并不绑定某一个客户端。
+
+```text
+~/.agentloom/skills/<name>/{core, variants/dsh.md, variants/codex.md}
+        │
+        ├── ~/.dsh/skills/<name>        （junction / 软链接）   → DeepSeek Harness
+        └── build/codex-marketplace     （Codex 插件 + MCP）    → Codex
+
+~/.agentloom/memory/shared.md  ⇄  DSH 注入内容
+                               ⇄  ~/.codex/AGENTS.md（标记块）
+                               ⇄  MCP 工具 loom_memory_*
+```
+
+### 解决什么问题
+
+- **技能漂移**：同一个流程不再复制两份。两端共用正文放在 `core/SKILL.md`，只把工具名、Shell
+  写法等真实差异放进 `variants/dsh.md` 或 `variants/codex.md`。
+- **记忆不互通**：共享记忆从任意一端写入，再同步到 DSH 的注入内容、Codex 的 `AGENTS.md` 标记块
+  和 `loom_memory_*` MCP 工具。
+- **MCP 配置重复**：MCP 服务器只在 `mcp/servers.json` 定义一次，再生成各端配置。凭据不会被打包
+  进提交到仓库的插件产物。
+
+### 安装
+
+需要 Node.js 22.5 或更高版本。
+
+```bash
+# npm（推荐）
+npm i -g @nowyousee1/agentloom
+agentloom init
+agentloom doctor
+agentloom sync
+
+# 无法访问 npm 时，也可以直接安装 GitHub Release 附件
+npm i -g https://github.com/Nowyousee1/agentloom/releases/latest/download/agentloom-cli.tgz
+```
+
+Codex 侧首次安装：
+
+```bash
+# agentloom 会在本机输出对应的绝对路径
+codex plugin marketplace add ~/.agentloom/build/codex-marketplace
+codex plugin add agentloom@agentloom
+```
+
+在 DeepSeek Harness 中安装 `dsh-agentloom` 插件后，通常需要重启一次 DSH 让 Cordis 插件生效。
+插件提供 `loom_status`、`loom_sync`、`loom_memory_search`、`loom_memory_list`、
+`loom_memory_add` 和 `loom_skill_list` 工具。
+
+### 常用操作
+
+新建共享技能：
+
+```bash
+agentloom skill new my-skill --description="什么时候使用这个技能"
+$EDITOR ~/.agentloom/skills/my-skill/core/SKILL.md
+$EDITOR ~/.agentloom/skills/my-skill/variants/dsh.md
+$EDITOR ~/.agentloom/skills/my-skill/variants/codex.md
+agentloom sync
+```
+
+接管现有 Codex 技能：
+
+```bash
+agentloom skill import --from=codex --dry-run
+agentloom skill import --from=codex --filter=stm32
+```
+
+写入一条两端可见的共享结论：
+
+```bash
+agentloom memory add \
+  --title="本机优先使用 pnpm" \
+  --body="构建机上只安装了 pnpm。" \
+  --kind=preference --scope=global --tags=tooling
+agentloom sync
+```
+
+### 命令一览
+
+```text
+agentloom init [--force]         初始化 hub、种子技能、链接与索引
+agentloom sync                   完整流水线（渲染 → 链接 → MCP → Codex → 记忆 → 索引）
+agentloom status                 查看当前状态
+agentloom doctor                 健康检查；出现 ✖ 时返回非零退出码
+agentloom paths                  以 JSON 输出关键路径
+agentloom skill list|show|new|adopt|validate
+agentloom skill import --from=codex [--filter=s] [--limit=N] [--dry-run] [--force]
+agentloom link dsh [name...] [--force]
+agentloom unlink <name...>
+agentloom codex build|project <dir>|info
+agentloom memory index|search <q>|digest|sources
+agentloom memory add --title=T --body=B [--kind=preference] [--scope=global] [--tags=a,b]
+agentloom memory list|remove --title=T
+agentloom mcp list|add <name> --json=...|remove <name>|sync
+```
+
+遇到问题时先运行 `agentloom doctor`。它会检查 Node 版本、hub 配置、DSH 链接、Codex 技能清单、
+MCP 桥接及其运行时副本、Codex 插件版本与缓存、`AGENTS.md` 镜像块、索引新鲜度、历史遗留目录
+以及 DSH 兼容补丁。
+
+### 已验证能力
+
+| 能力 | 机制 | 证据 |
+| --- | --- | --- |
+| 一份技能真源，两端使用 | `core` + 按端渲染的 variants | DSH 专属标记只出现在 DSH 产物中 |
+| DSH 自动看到技能 | `~/.dsh/skills` 链接 | `agentloom doctor` 报告 `links 2/2` |
+| Codex 自动看到技能 | Codex marketplace 插件 | `codex plugin list` 显示 `agentloom@agentloom` |
+| 两端读写同一份记忆 | `shared.md` + AGENTS.md 标记块 + MCP | 任一端写入后，另一端可检索到 |
+| Codex 不调用工具也能看到关键记忆 | `AGENTS.md` 标记块 | 禁止工具调用的 Codex 会话仍能引用该内容 |
+| MCP 定义可共享 | `servers.json` → 各端配置 | 插件产物不包含第三方凭据 |
+| 同步幂等 | 每次写入都有锚点与所有权检查 | 连续执行两次 `sync`，第二次全部为 `unchanged` |
+
+### 设计原则
+
+1. **文件优先，不引入数据库。** `~/.agentloom` 下的内容都可以审查、Diff 和版本控制。
+2. **派生状态可以随时重建。** `build/`、`runtime/` 和 `memory/index.json` 都能由 `sync` 重建。
+3. **不删除不属于自己的内容。** 只有 agentloom 创建的链接和确认的派生文件才会被清理。
+4. **构造上保持幂等。** 文本补丁同时校验锚点与目标，重复执行不会重复写入。
+5. **差异必须显式。** 端相关行为放在有名字的 overlay 中，不用阅读两份分叉副本才能看懂。
+
+### 卸载
+
+```bash
+agentloom unlink $(ls ~/.dsh/skills)      # 只移除 agentloom 创建的链接
+codex plugin remove agentloom@agentloom
+rm -rf ~/.agentloom
+```
+
+`~/.codex/AGENTS.md` 中的标记块可以手工删除；首次写入前的备份文件名为 `AGENTS.md.bak-agenthub`。
+
+### 文档
+
+| 文档 | 内容 |
+| --- | --- |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | 组件关系、同步顺序、失败模式与扩展点 |
+| [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md) | 已验证的宿主版本、兼容补丁与迁移说明 |
+| [docs/FAQ.md](docs/FAQ.md) | 只使用一端、数据位置、失效链接、卸载等常见问题 |
+| [docs/PUBLISHING.md](docs/PUBLISHING.md) | 维护者发布清单与所需 secret |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | 开发环境、五条不变量与测试矩阵 |
+| [SECURITY.md](SECURITY.md) | 威胁模型、保证与非保证范围 |
+| [CHANGELOG.md](CHANGELOG.md) | 每个版本的变更记录 |
+
+### 状态与许可
+
+当前版本同时发布到 npm 与 GitHub Releases。已在 Windows 11、DeepSeek Harness 桌面版和 Codex CLI
+上完成端到端验证。项目刻意保持简单：没有后台守护进程，不监听网络端口，也没有运行时依赖。
+
+MIT，详见 [LICENSE](LICENSE)。
