@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/Nowyousee1/agentloom/actions/workflows/ci.yml/badge.svg)](https://github.com/Nowyousee1/agentloom/actions/workflows/ci.yml)
 [![release](https://img.shields.io/github/v/release/Nowyousee1/agentloom?label=release)](https://github.com/Nowyousee1/agentloom/releases)
-[![npm](https://img.shields.io/npm/v/agentloom?label=agentloom)](https://www.npmjs.com/package/agentloom)
+[![npm](https://img.shields.io/npm/v/@nowyousee1/agentloom?label=%40nowyousee1%2Fagentloom)](https://www.npmjs.com/package/@nowyousee1/agentloom)
 [![npm plugin](https://img.shields.io/npm/v/dsh-agentloom?label=dsh-agentloom)](https://www.npmjs.com/package/dsh-agentloom)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![node](https://img.shields.io/badge/node-%3E%3D22.5-339933.svg)](https://nodejs.org)
@@ -30,7 +30,7 @@ per-harness differences kept in explicit overlay files rather than in divergent 
 | What you are looking for | Where it is |
 | --- | --- |
 | This repository | `github.com/Nowyousee1/agentloom` — search GitHub for **`agentloom`** or the topics `agent-skills`, `shared-memory`, `mcp`, `codex`, `deepseek-harness` |
-| CLI on npm | [`agentloom`](https://www.npmjs.com/package/agentloom) → `npm i -g agentloom` (or `npx agentloom`) |
+| CLI on npm | [`@nowyousee1/agentloom`](https://www.npmjs.com/package/@nowyousee1/agentloom) → `npm i -g @nowyousee1/agentloom` (or `npx @nowyousee1/agentloom`); the installed command is still `agentloom` |
 | DSH plugin on npm | [`dsh-agentloom`](https://www.npmjs.com/package/dsh-agentloom) |
 | Inside DeepSeek Harness | plugin manager → `dsh-agentloom`; plugin entry `include:dsh-agentloom`; MCP tools are the 7 `loom_*` tools |
 | Inside Codex | `codex plugin list` → `agentloom@agentloom`; MCP server name `agentloom` |
@@ -52,7 +52,7 @@ per-harness differences kept in explicit overlay files rather than in divergent 
 
 ```bash
 # requires Node.js >= 22.5.0
-node packages/cli/bin/agentloom.mjs init      # or: npx agentloom init
+node packages/cli/bin/agentloom.mjs init      # or: npx @nowyousee1/agentloom init
 agentloom doctor                              # is everything actually wired up?
 agentloom sync                                # idempotent: re-render, re-link, rebuild, re-index
 

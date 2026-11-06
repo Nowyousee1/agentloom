@@ -6,7 +6,12 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
-Nothing yet.
+### Changed
+
+- The CLI is published as `@nowyousee1/agentloom`: the unscoped `agentloom` name on npm belongs to an
+  unrelated package. The installed command is still `agentloom`, and `dsh-agentloom` stays unscoped.
+
+Nothing else yet.
 
 ## [0.3.1] — 2026-11-05
 

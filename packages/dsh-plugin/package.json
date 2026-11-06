@@ -40,10 +40,10 @@
     }
   },
   "peerDependencies": {
-    "agentloom": ">=0.3.0"
+    "@nowyousee1/agentloom": ">=0.3.0"
   },
   "peerDependenciesMeta": {
-    "agentloom": {
+    "@nowyousee1/agentloom": {
       "optional": true
     }
   },

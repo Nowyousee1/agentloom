@@ -41,9 +41,10 @@ publishes both packages with `--provenance` and creates the GitHub release from 
 
 ## After publishing
 
-- `npm view agentloom version` and `npm view dsh-agentloom version` must show the new version.
+- `npm view @nowyousee1/agentloom version` and `npm view dsh-agentloom version` must show the new
+  version.
 - Install from the registry in a scratch container:
-  `npm i -g agentloom@latest && agentloom --help`.
+  `npm i -g @nowyousee1/agentloom@latest && agentloom --help`.
 - Confirm the DSH plugin resolves: `plugin_manager` shows `dsh-agentloom` as installed, no warnings.
 - Confirm the Codex side: `agentloom sync`, then `codex plugin add agentloom@agentloom`, then one
   real tool call.
