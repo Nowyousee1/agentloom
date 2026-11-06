@@ -1,6 +1,6 @@
 {
   "name": "dsh-agentloom",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "type": "module",
   "description": "Bridge the shared ~/.agentloom layer into DeepSeek Harness: hub status, one-shot sync, shared memory search, and injection of the memory entries the host's AGENTS.md budget currently truncates away.",
   "keywords": [
