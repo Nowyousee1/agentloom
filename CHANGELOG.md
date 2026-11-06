@@ -8,6 +8,17 @@ All notable changes to this project are documented here. The format follows
 
 Nothing yet.
 
+## [0.3.5] — 2026-11-06
+
+### Changed
+
+- The complete Simplified Chinese guide is now integrated into the root `README.md` with a language
+  switch. `README.zh-CN.md` remains as a compatibility pointer instead of a second source of truth.
+- npm is now the primary installation path throughout the project and package READMEs; GitHub release
+  tarballs remain documented as offline fallbacks.
+- The README status and package links reflect the published `0.3.4` registry packages instead of the
+  earlier pending-verification state.
+
 ## [0.3.4] — 2026-11-06
 
 ### Fixed
@@ -117,7 +128,8 @@ First public release under the name **agentloom** (formerly `agent-hub`).
   host (`settingsNamespace`, `installSettingsSection`, typert `create()` codecs).
 - Invalid skill names and empty shared-memory titles are rejected instead of written.
 
-[Unreleased]: https://github.com/Nowyousee1/agentloom/compare/v0.3.4...HEAD
+[Unreleased]: https://github.com/Nowyousee1/agentloom/compare/v0.3.5...HEAD
+[0.3.5]: https://github.com/Nowyousee1/agentloom/compare/v0.3.4...v0.3.5
 [0.3.4]: https://github.com/Nowyousee1/agentloom/compare/v0.3.3...v0.3.4
 [0.3.3]: https://github.com/Nowyousee1/agentloom/compare/v0.3.2...v0.3.3
 [0.3.2]: https://github.com/Nowyousee1/agentloom/compare/v0.3.1...v0.3.2

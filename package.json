@@ -1,6 +1,6 @@
 {
   "name": "agentloom-monorepo",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "private": true,
   "type": "module",
   "description": "Monorepo for agentloom: one source of truth for skills, MCP servers and memory across AI coding agents.",

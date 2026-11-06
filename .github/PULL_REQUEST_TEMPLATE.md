@@ -24,5 +24,5 @@ The commands a reviewer can run, e.g.:
 - [ ] If this changes behavior, I updated `CHANGELOG.md` under "Unreleased"
 - [ ] If this changes the generated Codex plugin layout, I bumped `CODEX_PLUGIN_VERSION` in
       `packages/cli/src/codex.mjs`
-- [ ] If this changes a documented command or config key, I updated both `README.md` and
-      `README.zh-CN.md`
+- [ ] If this changes a documented command or config key, I updated the English and Chinese sections
+      in `README.md` and the relevant package `README.md`
