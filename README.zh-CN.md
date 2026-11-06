@@ -2,8 +2,8 @@
 
 [![CI](https://github.com/Nowyousee1/agentloom/actions/workflows/ci.yml/badge.svg)](https://github.com/Nowyousee1/agentloom/actions/workflows/ci.yml)
 [![release](https://img.shields.io/github/v/release/Nowyousee1/agentloom?label=release)](https://github.com/Nowyousee1/agentloom/releases)
-[![npm](https://img.shields.io/npm/v/@nowyousee1/agentloom?label=%40nowyousee1%2Fagentloom)](https://www.npmjs.com/package/@nowyousee1/agentloom)
-[![npm plugin](https://img.shields.io/npm/v/dsh-agentloom?label=dsh-agentloom)](https://www.npmjs.com/package/dsh-agentloom)
+[![CLI package](https://img.shields.io/badge/CLI-release%20tarball-2ea44f)](https://github.com/Nowyousee1/agentloom/releases/latest/download/agentloom-cli.tgz)
+[![DSH plugin](https://img.shields.io/badge/DSH-plugin%20tarball-2ea44f)](https://github.com/Nowyousee1/agentloom/releases/latest/download/dsh-agentloom.tgz)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 **为多个 AI 编码代理维护同一份技能、MCP 服务器与记忆。**
@@ -28,8 +28,9 @@ DeepSeek Harness 与 Codex 各自有自己的技能目录、指令文件与 MCP 
 | 你要找的东西 | 在哪里 |
 | --- | --- |
 | 仓库本身 | `github.com/Nowyousee1/agentloom`；GitHub 搜 **`agentloom`**，或 topics：`agent-skills`、`shared-memory`、`mcp`、`codex`、`deepseek-harness` |
-| npm 上的 CLI | [`@nowyousee1/agentloom`](https://www.npmjs.com/package/@nowyousee1/agentloom) → `npm i -g @nowyousee1/agentloom`（或 `npx @nowyousee1/agentloom`）；安装后的命令仍叫 `agentloom` |
-| npm 上的 DSH 插件 | [`dsh-agentloom`](https://www.npmjs.com/package/dsh-agentloom) |
+| CLI 安装包 | [GitHub Release tarball](https://github.com/Nowyousee1/agentloom/releases/latest/download/agentloom-cli.tgz) → `npm i -g <url>`；安装后的命令叫 `agentloom` |
+| DSH 插件安装包 | [GitHub Release tarball](https://github.com/Nowyousee1/agentloom/releases/latest/download/dsh-agentloom.tgz) |
+| npm 注册表名称 | `@nowyousee1/agentloom` 与 `dsh-agentloom` 已准备好，首次发布仍待 npm 账号验证 |
 | DeepSeek Harness 内 | 插件管理器里找 `dsh-agentloom`；entry 为 `include:dsh-agentloom`；MCP 工具是 7 个 `loom_*` |
 | Codex 内 | `codex plugin list` 显示 `agentloom@agentloom`；MCP 服务器名 `agentloom` |
 | 本机 | 真源 `~/.agentloom`，配置 `~/.agentloom/hub.json`，生成的 Codex 插件 `~/.agentloom/build/codex-marketplace` |
@@ -39,7 +40,8 @@ DeepSeek Harness 与 Codex 各自有自己的技能目录、指令文件与 MCP 
 
 ```bash
 # 需要 Node.js >= 22.5.0
-node packages/cli/bin/agentloom.mjs init
+npm i -g https://github.com/Nowyousee1/agentloom/releases/latest/download/agentloom-cli.tgz
+agentloom init
 agentloom doctor        # 体检：链接、桥接、Codex 侧是否真的接上
 agentloom sync          # 幂等：重渲染、重连、重建插件与索引
 
@@ -98,7 +100,7 @@ packages/dsh-plugin     DeepSeek Harness 插件：注入 + loom_* 工具 + Confi
 docs/ARCHITECTURE.md    组件、执行顺序与失败模式
 docs/COMPATIBILITY.md   已验证版本、宿主 shim 细节、迁移步骤
 docs/FAQ.md             只有一端、数据在哪、链接失效、卸载等常见问题
-docs/PUBLISHING.md      维护者发版清单（占位 URL、NPM_TOKEN、发版命令、禁止提交项）
+docs/PUBLISHING.md      维护者发版清单（Release 安装包、NPM_TOKEN、发版命令、禁止提交项）
 ```
 
 ## 已知边界

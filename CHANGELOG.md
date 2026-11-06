@@ -6,12 +6,20 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+Nothing yet.
+
+## [0.3.2] — 2026-11-06
+
 ### Changed
 
 - The CLI is published as `@nowyousee1/agentloom`: the unscoped `agentloom` name on npm belongs to an
   unrelated package. The installed command is still `agentloom`, and `dsh-agentloom` stays unscoped.
 
-Nothing else yet.
+### Added
+
+- Every GitHub release now carries stable `agentloom-cli.tgz`, `dsh-agentloom.tgz` and
+  `SHA256SUMS` assets. Installation no longer depends on npm registry availability or credentials.
+- `scripts/verify.mjs` rejects a release workflow that stops attaching those installable artifacts.
 
 ## [0.3.1] — 2026-11-05
 
@@ -94,6 +102,7 @@ First public release under the name **agentloom** (formerly `agent-hub`).
   host (`settingsNamespace`, `installSettingsSection`, typert `create()` codecs).
 - Invalid skill names and empty shared-memory titles are rejected instead of written.
 
-[Unreleased]: https://github.com/Nowyousee1/agentloom/compare/v0.3.1...HEAD
+[Unreleased]: https://github.com/Nowyousee1/agentloom/compare/v0.3.2...HEAD
+[0.3.2]: https://github.com/Nowyousee1/agentloom/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/Nowyousee1/agentloom/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/Nowyousee1/agentloom/releases/tag/v0.3.0

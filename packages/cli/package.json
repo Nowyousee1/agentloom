@@ -1,6 +1,6 @@
 {
   "name": "@nowyousee1/agentloom",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "type": "module",
   "description": "Single source of truth for skills, MCP servers and memory shared between DeepSeek Harness and Codex CLI.",
   "keywords": [

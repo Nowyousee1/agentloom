@@ -2,8 +2,8 @@
 
 [![CI](https://github.com/Nowyousee1/agentloom/actions/workflows/ci.yml/badge.svg)](https://github.com/Nowyousee1/agentloom/actions/workflows/ci.yml)
 [![release](https://img.shields.io/github/v/release/Nowyousee1/agentloom?label=release)](https://github.com/Nowyousee1/agentloom/releases)
-[![npm](https://img.shields.io/npm/v/@nowyousee1/agentloom?label=%40nowyousee1%2Fagentloom)](https://www.npmjs.com/package/@nowyousee1/agentloom)
-[![npm plugin](https://img.shields.io/npm/v/dsh-agentloom?label=dsh-agentloom)](https://www.npmjs.com/package/dsh-agentloom)
+[![CLI package](https://img.shields.io/badge/CLI-release%20tarball-2ea44f)](https://github.com/Nowyousee1/agentloom/releases/latest/download/agentloom-cli.tgz)
+[![DSH plugin](https://img.shields.io/badge/DSH-plugin%20tarball-2ea44f)](https://github.com/Nowyousee1/agentloom/releases/latest/download/dsh-agentloom.tgz)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![node](https://img.shields.io/badge/node-%3E%3D22.5-339933.svg)](https://nodejs.org)
 
@@ -30,8 +30,9 @@ per-harness differences kept in explicit overlay files rather than in divergent 
 | What you are looking for | Where it is |
 | --- | --- |
 | This repository | `github.com/Nowyousee1/agentloom` — search GitHub for **`agentloom`** or the topics `agent-skills`, `shared-memory`, `mcp`, `codex`, `deepseek-harness` |
-| CLI on npm | [`@nowyousee1/agentloom`](https://www.npmjs.com/package/@nowyousee1/agentloom) → `npm i -g @nowyousee1/agentloom` (or `npx @nowyousee1/agentloom`); the installed command is still `agentloom` |
-| DSH plugin on npm | [`dsh-agentloom`](https://www.npmjs.com/package/dsh-agentloom) |
+| CLI package | [GitHub release tarball](https://github.com/Nowyousee1/agentloom/releases/latest/download/agentloom-cli.tgz) → `npm i -g <url>`; the installed command is `agentloom` |
+| DSH plugin | [GitHub release tarball](https://github.com/Nowyousee1/agentloom/releases/latest/download/dsh-agentloom.tgz) |
+| npm registry names | `@nowyousee1/agentloom` and `dsh-agentloom` are prepared, but their initial registry publication is pending account verification |
 | Inside DeepSeek Harness | plugin manager → `dsh-agentloom`; plugin entry `include:dsh-agentloom`; MCP tools are the 7 `loom_*` tools |
 | Inside Codex | `codex plugin list` → `agentloom@agentloom`; MCP server name `agentloom` |
 | On this machine | source of truth `~/.agentloom`, config `~/.agentloom/hub.json`, generated Codex plugin `~/.agentloom/build/codex-marketplace` |
@@ -52,7 +53,8 @@ per-harness differences kept in explicit overlay files rather than in divergent 
 
 ```bash
 # requires Node.js >= 22.5.0
-node packages/cli/bin/agentloom.mjs init      # or: npx @nowyousee1/agentloom init
+npm i -g https://github.com/Nowyousee1/agentloom/releases/latest/download/agentloom-cli.tgz
+agentloom init
 agentloom doctor                              # is everything actually wired up?
 agentloom sync                                # idempotent: re-render, re-link, rebuild, re-index
 
@@ -199,9 +201,11 @@ The marked block in `~/.codex/AGENTS.md` can be deleted by hand; the backup from
 
 ## Status
 
-0.3.0 — the first public release under this name. Verified end-to-end on Windows 11 with DeepSeek
-Harness (desktop) and Codex CLI 0.157.1. The design is intentionally conservative: no background
-daemon, no network listener, no runtime dependencies.
+0.3.2 — source, tests and installable GitHub release artifacts are public. Verified end-to-end on
+Windows 11 with DeepSeek Harness (desktop) and Codex CLI 0.157.1. The design is intentionally
+conservative: no background daemon, no network listener, no runtime dependencies. Initial npm
+registry publication is still pending npm account verification; the release tarballs do not depend
+on that step.
 
 ## License
 

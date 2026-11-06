@@ -1,15 +1,16 @@
 # agentloom (CLI)
 
-[![npm](https://img.shields.io/npm/v/agentloom)](https://www.npmjs.com/package/agentloom)
+[![release](https://img.shields.io/github/v/release/Nowyousee1/agentloom?label=release)](https://github.com/Nowyousee1/agentloom/releases)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 Dependency-free Node.js (>= 22.5) command line tool that owns the `~/.agentloom` source of truth and
 renders skills, MCP definitions and memory into DeepSeek Harness and Codex.
 
 ```bash
-node bin/agentloom.mjs init      # create the hub, seed skills, link, build the index
-node bin/agentloom.mjs doctor    # check that everything is actually wired up
-node bin/agentloom.mjs sync      # idempotent full pipeline
+npm i -g https://github.com/Nowyousee1/agentloom/releases/latest/download/agentloom-cli.tgz
+agentloom init      # create the hub, seed skills, link, build the index
+agentloom doctor    # check that everything is actually wired up
+agentloom sync      # idempotent full pipeline
 ```
 
 Full documentation: [repository README](../../README.md), architecture in

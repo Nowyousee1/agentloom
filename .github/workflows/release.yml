@@ -35,6 +35,16 @@ jobs:
       - name: Tests
         run: node --test packages/cli/test/*.test.mjs
 
+      - name: Pack installable release artifacts
+        run: |
+          mkdir -p release-assets
+          npm pack ./packages/cli --pack-destination release-assets
+          npm pack ./packages/dsh-plugin --pack-destination release-assets
+          mv release-assets/nowyousee1-agentloom-*.tgz release-assets/agentloom-cli.tgz
+          mv release-assets/dsh-agentloom-*.tgz release-assets/dsh-agentloom.tgz
+          sha256sum release-assets/*.tgz > release-assets/SHA256SUMS
+          ls -lh release-assets
+
       - name: Publish CLI
         if: env.NPM_TOKEN != ''
         working-directory: packages/cli
@@ -63,3 +73,8 @@ jobs:
           ' CHANGELOG.md > notes.md
           [ -s notes.md ] || echo "See CHANGELOG.md" > notes.md
           gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --notes-file notes.md
+
+      - name: Attach installable release artifacts
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload "$GITHUB_REF_NAME" release-assets/* --clobber

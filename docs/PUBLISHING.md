@@ -10,8 +10,9 @@ this file alone.
    `packages/*/package.json`, `CONTRIBUTING.md`, and the badges in `README.md` / `README.zh-CN.md`.
 2. Turn on GitHub: Issues, Discussions (optional), branch protection on `main` requiring the `test`
    status check, and "Require a pull request before merging".
-3. Add the `NPM_TOKEN` repository secret (an npm automation token with publish rights on `agentloom`
-   and `dsh-agentloom`).
+3. Add the `NPM_TOKEN` repository secret when registry publishing is enabled (an npm automation token
+   with publish rights on `@nowyousee1/agentloom` and `dsh-agentloom`). This is optional for a GitHub
+   release: the workflow always attaches directly installable CLI and DSH plugin tarballs.
 4. Add repository topics so people can find it:
    `agent-skills`, `shared-memory`, `mcp`, `codex`, `deepseek-harness`, `developer-tools`,
    `claude-code`, `ai-agents`.
@@ -35,16 +36,17 @@ git tag v0.4.0
 git push origin main --tags              # triggers .github/workflows/release.yml
 ```
 
-The `release` workflow re-checks the tag against `package.json`, runs the gate and the tests, then
-publishes both packages with `--provenance` and creates the GitHub release from the matching
-`CHANGELOG.md` section.
+The `release` workflow re-checks the tag against `package.json`, runs the gate and the tests, packs
+both packages as `agentloom-cli.tgz` and `dsh-agentloom.tgz`, publishes them to npm only when
+`NPM_TOKEN` is configured, creates the GitHub release from the matching `CHANGELOG.md` section, and
+attaches both tarballs plus `SHA256SUMS` to that release.
 
 ## After publishing
 
-- `npm view @nowyousee1/agentloom version` and `npm view dsh-agentloom version` must show the new
-  version.
-- Install from the registry in a scratch container:
-  `npm i -g @nowyousee1/agentloom@latest && agentloom --help`.
+- Install the GitHub release artifact in a scratch directory:
+  `npm i -g https://github.com/Nowyousee1/agentloom/releases/latest/download/agentloom-cli.tgz && agentloom --help`.
+- If registry publishing was enabled, `npm view @nowyousee1/agentloom version` and
+  `npm view dsh-agentloom version` must show the new version.
 - Confirm the DSH plugin resolves: `plugin_manager` shows `dsh-agentloom` as installed, no warnings.
 - Confirm the Codex side: `agentloom sync`, then `codex plugin add agentloom@agentloom`, then one
   real tool call.

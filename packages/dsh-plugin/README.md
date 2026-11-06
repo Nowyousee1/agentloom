@@ -1,6 +1,6 @@
 # dsh-agentloom
 
-[![npm](https://img.shields.io/npm/v/dsh-agentloom)](https://www.npmjs.com/package/dsh-agentloom)
+[![release](https://img.shields.io/github/v/release/Nowyousee1/agentloom?label=release)](https://github.com/Nowyousee1/agentloom/releases)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 DeepSeek Harness plugin that connects the harness to the shared `~/.agentloom` layer.
@@ -34,8 +34,8 @@ not invisible according to a hard-coded constant.
 # from the monorepo checkout
 plugin_manager install_bundle target="link:<abs path to packages/dsh-plugin>"
 
-# or from the registry, once published
-pnpm add dsh-agentloom
+# or install the tarball attached to the latest GitHub release
+dsh plugin --profile desktop add https://github.com/Nowyousee1/agentloom/releases/latest/download/dsh-agentloom.tgz
 ```
 
 Installing under a new package name (`dsh-agentloom`, formerly `@local/dsh-agent-hub`) requires a

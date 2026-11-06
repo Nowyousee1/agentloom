@@ -10,7 +10,7 @@ export const CODEX_PLUGIN_NAME = 'agentloom';
  * Codex's per-version cache under ~/.codex/plugins/cache/<marketplace>/<plugin>/<version>/ misses and
  * re-copies. Reusing a version leaves Codex running the stale snapshot forever.
  */
-export const CODEX_PLUGIN_VERSION = '0.3.1';
+export const CODEX_PLUGIN_VERSION = '0.3.2';
 
 function readMcpServers() {
   const p = path.join(MCP_DIR, 'servers.json');

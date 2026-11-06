@@ -144,6 +144,22 @@ for (const file of docs) {
 }
 note(brokenLinks === 0, 'doc links', `${docs.length} documents`);
 
+// 6. release artifacts -----------------------------------------------------------------------------
+const releaseWorkflow = fs.readFileSync(path.join(root, '.github', 'workflows', 'release.yml'), 'utf8');
+const releaseArtifactMarkers = [
+  'agentloom-cli.tgz',
+  'dsh-agentloom.tgz',
+  'SHA256SUMS',
+  'gh release upload'
+];
+const missingReleaseMarkers = releaseArtifactMarkers.filter((marker) => !releaseWorkflow.includes(marker));
+for (const marker of missingReleaseMarkers) fail('release artifacts', `release workflow is missing ${marker}`);
+note(
+  missingReleaseMarkers.length === 0,
+  'release artifacts',
+  missingReleaseMarkers.length === 0 ? 'CLI, DSH plugin and checksums are attached' : 'incomplete'
+);
+
 // report -------------------------------------------------------------------------------------------
 for (const c of checks) console.log(`${c.ok ? '✓' : '✖'} ${c.label}${c.detail ? `  ${c.detail}` : ''}`);
 if (problems.length) {
