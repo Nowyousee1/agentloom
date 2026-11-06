@@ -8,6 +8,13 @@ All notable changes to this project are documented here. The format follows
 
 Nothing yet.
 
+## [0.3.3] — 2026-11-06
+
+### Fixed
+
+- `SHA256SUMS` now contains artifact basenames instead of build-directory paths, so downloading the
+  three release assets into one directory is enough to run `sha256sum -c SHA256SUMS`.
+
 ## [0.3.2] — 2026-11-06
 
 ### Changed
@@ -102,7 +109,8 @@ First public release under the name **agentloom** (formerly `agent-hub`).
   host (`settingsNamespace`, `installSettingsSection`, typert `create()` codecs).
 - Invalid skill names and empty shared-memory titles are rejected instead of written.
 
-[Unreleased]: https://github.com/Nowyousee1/agentloom/compare/v0.3.2...HEAD
+[Unreleased]: https://github.com/Nowyousee1/agentloom/compare/v0.3.3...HEAD
+[0.3.3]: https://github.com/Nowyousee1/agentloom/compare/v0.3.2...v0.3.3
 [0.3.2]: https://github.com/Nowyousee1/agentloom/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/Nowyousee1/agentloom/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/Nowyousee1/agentloom/releases/tag/v0.3.0
